@@ -23,7 +23,7 @@ body {
 .form-title {
   font-size: 28px;
   font-weight: 700;
-  color: #0f172a;
+  color: #ffffff;
   margin-bottom: 16px;
 }
 
@@ -54,4 +54,14 @@ body {
 
 .form-footer a:hover {
   text-decoration: underline;
+}
+
+.test {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.test:hover {
+  background-color: #aaaaaa !important;
+  color: #000000 !important;
 }
