@@ -1,6 +1,6 @@
 # Kayo
 
-## 👥 Équipe
+## Équipe
 
 - MAUGER Mathieu  
 - GRIGNON Enzo  
@@ -9,14 +9,14 @@
 
 ---
 
-## 📰 Social Media APP
+## Social Media APP
 
 Application web permettant aux utilisateurs de s’inscrire, se connecter et interagir via des posts  
 (publication, commentaires et likes).
 
 ---
 
-## 🚀 Fonctionnalités
+## Fonctionnalités
 
 - Inscription et connexion utilisateur
 - Authentification par token
@@ -29,7 +29,7 @@ Application web permettant aux utilisateurs de s’inscrire, se connecter et int
 
 ---
 
-## 🛠️ Technologies utilisées
+## Technologies utilisées
 
 ### Frontend
 - TypeScript
@@ -45,7 +45,7 @@ Application web permettant aux utilisateurs de s’inscrire, se connecter et int
 
 ---
 
-## 📦 Installation
+## Installation
 
 ### 1. Cloner le projet
 
