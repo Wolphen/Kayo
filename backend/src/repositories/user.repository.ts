@@ -42,7 +42,9 @@ export class UserRepository {
 
     update(
         user: User,
-        updates: Partial<Pick<User, "email" | "username" | "bio" | "isPublic">>,
+        updates: Partial<
+            Pick<User, "email" | "username" | "bio" | "isPublic" | "photoUrl">
+        >,
     ): User {
         if (updates.email !== undefined) {
             user.email = updates.email;
@@ -55,6 +57,9 @@ export class UserRepository {
         }
         if (updates.isPublic !== undefined) {
             user.isPublic = updates.isPublic;
+        }
+        if (updates.photoUrl !== undefined) {
+            user.photoUrl = updates.photoUrl;
         }
         user.modifiedAt = new Date();
         return user;
