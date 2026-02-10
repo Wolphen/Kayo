@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Badge, Button, Card } from "flowbite-react";
 import "../assets/css/profile.css";
 import EditProfileModal from "../components/EditProfileModal";
+import CreatePostModal from "../components/CreatePostComponent";
 
 import PostCard from "../components/PostCard";
 
@@ -35,7 +36,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
   const [error, setError] = useState<string>("");
   const [isFollowSubmitting, setIsFollowSubmitting] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-
+  const [isCreatePosts, setIsCreatePosts] = useState<boolean>(false);
 
   const mockPostsByUser: Record<
     string,
@@ -67,7 +68,8 @@ function ProfilPage({ userId }: ProfilPageProps) {
       },
       {
         id: "p21",
-        content: "Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.",
+        content:
+          "Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.",
         imageUrl: "https://picsum.photos/seed/p21/900/500",
         createdAt: "2025-10-28T12:05:00.000Z",
         likes: 9,
@@ -201,7 +203,6 @@ function ProfilPage({ userId }: ProfilPageProps) {
     }
   };
 
-
   return (
     <main className="profile-page">
       <div className="profile-shell">
@@ -270,7 +271,11 @@ function ProfilPage({ userId }: ProfilPageProps) {
                   : "Latest activity from this profile."}
               </p>
             </div>
-            {isOwnProfile ? <Button color="light">New post</Button> : null}
+            {isOwnProfile ? (
+              <Button color="light" onClick={() => setIsCreatePosts(true)}>
+                New post
+              </Button>
+            ) : null}
           </div>
           <div className="post-grid">
             {posts.map((post) => (
@@ -297,6 +302,14 @@ function ProfilPage({ userId }: ProfilPageProps) {
           onSaved={(updated) => {
             setUser((prev) => (prev ? { ...prev, ...updated } : prev));
             setIsEditOpen(false);
+          }}
+        />
+      ) : null}
+      {isCreatePosts && user ? (
+        <CreatePostModal 
+          onClose={() => setIsCreatePosts(false)} 
+          onSaved={() => {
+
           }}
         />
       ) : null}

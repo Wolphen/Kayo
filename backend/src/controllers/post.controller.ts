@@ -1,10 +1,21 @@
 import { Request, Response } from "express";
 import { PostService } from "../services/post.service";
+import { AuthRequest } from "../middleware/auth.middleware";
 
 const service = new PostService();
 
 export const getPosts = (req: Request, res: Response) => {
     res.json(service.getPosts());
+};
+
+export const createPost = (req: AuthRequest, res: Response) => {
+    try {
+        const authorId = req.user?.sub ?? "";
+        const post = service.createPost(authorId, req.body);
+        res.status(201).json(post);
+    } catch (error) {
+        res.status(400).json({ message: (error as Error).message });
+    }
 };
 
 export const togglePostLike = (req: Request, res: Response) => {
