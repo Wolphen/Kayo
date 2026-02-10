@@ -16,6 +16,10 @@ export class UserRepository {
         return users.find((user) => user.email === email);
     }
 
+    findByUsername(username: string): User | undefined {
+        return users.find((user) => user.username === username);
+    }
+
     create(data: CreateUserDto): User {
         const newUser: User = {
             id: randomUUID(),
@@ -34,5 +38,25 @@ export class UserRepository {
 
         users.push(newUser);
         return newUser;
+    }
+
+    update(
+        user: User,
+        updates: Partial<Pick<User, "email" | "username" | "bio" | "isPublic">>,
+    ): User {
+        if (updates.email !== undefined) {
+            user.email = updates.email;
+        }
+        if (updates.username !== undefined) {
+            user.username = updates.username;
+        }
+        if (updates.bio !== undefined) {
+            user.bio = updates.bio;
+        }
+        if (updates.isPublic !== undefined) {
+            user.isPublic = updates.isPublic;
+        }
+        user.modifiedAt = new Date();
+        return user;
     }
 }

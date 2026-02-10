@@ -1,6 +1,8 @@
 ﻿import express from "express";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
+import commentRoutes from './routes/comment.routes';
+import postRoutes from "./routes/post.routes";
 
 const app = express();
 
@@ -11,7 +13,10 @@ app.use((req, res, next) => {
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
-    res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+    res.header(
+        "Access-Control-Allow-Methods",
+        "GET,POST,PUT,PATCH,DELETE,OPTIONS"
+    );
 
     if (req.method === "OPTIONS") {
         return res.sendStatus(204);
@@ -22,6 +27,8 @@ app.use((req, res, next) => {
 
 app.use("/users", userRoutes);
 app.use("/auth", authRoutes);
+app.use("/comments", commentRoutes);
+app.use("/posts", postRoutes);
 
 app.get("/", (req, res) => {
     res.send("API running.");

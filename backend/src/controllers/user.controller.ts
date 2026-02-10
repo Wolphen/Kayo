@@ -24,3 +24,44 @@ export const createUser = async (req: Request, res: Response) => {
         res.status(400).json({ message: (error as Error).message });
     }
 };
+
+export const followUser = (req: Request, res: Response) => {
+    try {
+        // TODO(auth): derive followerId from the authenticated user token, not the request body.
+        const followerId = req.body?.followerId;
+        const targetId = Array.isArray(req.params.id)
+            ? req.params.id[0]
+            : req.params.id;
+        const result = service.followUser(followerId, targetId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ message: (error as Error).message });
+    }
+};
+
+export const unfollowUser = (req: Request, res: Response) => {
+    try {
+        // TODO(auth): derive followerId from the authenticated user token, not the request body.
+        const followerId = req.body?.followerId;
+        const targetId = Array.isArray(req.params.id)
+            ? req.params.id[0]
+            : req.params.id;
+        const result = service.unfollowUser(followerId, targetId);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({ message: (error as Error).message });
+    }
+};
+
+export const updateUser = (req: Request, res: Response) => {
+    try {
+        const targetId = Array.isArray(req.params.id)
+            ? req.params.id[0]
+            : req.params.id;
+        // TODO(auth): verify the token and ensure the user can update this profile.
+        const updated = service.updateUser(targetId, req.body);
+        res.status(200).json(updated);
+    } catch (error) {
+        res.status(400).json({ message: (error as Error).message });
+    }
+};

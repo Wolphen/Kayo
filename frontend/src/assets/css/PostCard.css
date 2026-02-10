@@ -1,0 +1,88 @@
+.feed-post-card {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.feed-post-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.feed-post-body {
+  padding: 18px;
+  text-align: left;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.feed-post-author {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.feed-post-description {
+  margin: 0 0 6px;
+  font-size: 14px;
+  color: rgba(15, 23, 42, 0.52);
+  line-height: 1.45;
+}
+
+.feed-post-date {
+  margin: auto 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.feed-post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.feed-post-like-count {
+  font-size: 16px;
+  color: #ef4444;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.feed-post-like-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feed-post-like-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.feed-post-like-icon {
+  width: 24px;
+  height: 24px;
+  fill: transparent;
+  stroke: #ef4444;
+  stroke-width: 1.9;
+  transition: fill 160ms ease, transform 160ms ease;
+}
+
+.feed-post-like-btn:hover .feed-post-like-icon {
+  transform: scale(1.08);
+}
+
+.feed-post-like-btn.liked .feed-post-like-icon {
+  fill: #ef4444;
+}

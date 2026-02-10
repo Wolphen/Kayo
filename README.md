@@ -5,7 +5,7 @@
 - MAUGER Mathieu  
 - GRIGNON Enzo  
 - RIVA Matteo  
-- BEAUCHOT-LE-BON Elwan  
+- BEAUCHOT-LE BON Elwan  
 
 ---
 
