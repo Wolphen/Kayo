@@ -22,6 +22,14 @@ export class PostService {
             content: data.content.trim(),
             imageUrl: data.imageUrl?.trim() ?? "",
         });
+    getPostById(postId: string | string[]) {
+        const post = repo.findById(postId);
+
+        if (!post) {
+            throw new Error("Post not found");
+        }
+
+        return post;
     }
 
     toggleLike(postId: string | string[], userId: string) {

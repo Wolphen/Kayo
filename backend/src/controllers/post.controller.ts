@@ -15,6 +15,14 @@ export const createPost = (req: AuthRequest, res: Response) => {
         res.status(201).json(post);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });
+export const getPost = (req: Request, res: Response) => {
+    try {
+        const post = service.getPostById(req.params.id);
+        res.json(post);
+    } catch (error) {
+        const message = (error as Error).message;
+        const status = message === "Post not found" ? 404 : 400;
+        res.status(status).json({ message });
     }
 };
 
