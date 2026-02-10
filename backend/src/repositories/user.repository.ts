@@ -16,6 +16,10 @@ export class UserRepository {
         return users.find((user) => user.email === email);
     }
 
+    findByUsername(username: string): User | undefined {
+        return users.find((user) => user.username === username);
+    }
+
     create(data: CreateUserDto): User {
         const newUser: User = {
             id: randomUUID(),
