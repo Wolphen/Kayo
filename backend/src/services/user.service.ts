@@ -1,4 +1,5 @@
-﻿import { UserRepository } from "../repositories/user.repository";
+import argon2 from "argon2";
+import { UserRepository } from "../repositories/user.repository";
 import { CreateUserDto } from "../dtos/user/create-user.dto";
 
 const repo = new UserRepository();
@@ -18,7 +19,7 @@ export class UserService {
         return user;
     }
 
-    createUser(data: CreateUserDto) {
+    async createUser(data: CreateUserDto) {
         if (!data.username?.trim()) {
             throw new Error("Username is required");
         }
@@ -37,6 +38,10 @@ export class UserService {
             throw new Error("Email already used");
         }
 
-        return repo.create(data);
+        const hashedPassword = await argon2.hash(data.password);
+        return repo.create({
+            ...data,
+            password: hashedPassword,
+        });
     }
 }
