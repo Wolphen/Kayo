@@ -91,4 +91,13 @@ export const comments: Comment[] = [
         modifiedAt: new Date("2025-10-19T18:05:00Z"),
         likedBy: ["u1", "u8", "u9"],
     },
+    {
+        id: "c11",
+        postId: "p18",
+        authorId: "u4",
+        content: "C'est vraiment beau",
+        createdAt: new Date("2025-10-19T18:05:00Z"),
+        modifiedAt: new Date("2025-10-19T18:05:00Z"),
+        likedBy: ["u3", "u8"],
+    },
 ];

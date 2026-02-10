@@ -5,14 +5,14 @@ import {CreateCommentDto} from "../dtos/comment/create-comment.dto";
 const repo = new CommentRepository();
 
 export class CommentService {
-    getCommentsByPostId(postId: string | string[]) {
-        const comment = repo.findByPostId(postId);
+    getCommentsByPostId(postId: string) {
+        const comments = repo.findByPostId(postId);
+        return comments;
+    }
 
-        if (!comment) {
-            throw new Error("No comments found");
-        }
-
-        return comment;
+    getLastCommentByPostId(postId: string) {
+        const comment = repo.findLastByPostId(postId);
+        return comment || null;
     }
 
     createComment(data: CreateCommentDto) {

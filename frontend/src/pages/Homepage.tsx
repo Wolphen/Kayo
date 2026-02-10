@@ -43,6 +43,21 @@ function Homepage() {
       {isEmpty ? <p className="home-state">Aucun post pour le moment.</p> : null}
       <section className="home-grid">
         {sortedPosts.map((post) => (
+            <>
+                <PostCard
+                    key={post.id}
+                    imageUrl={post.imageUrl}
+                    content={post.content}
+                    createdAt={post.createdAt}
+                    authorName={usersById[post.authorId]?.username ?? "Unknown user"}
+                    likeCount={post.likes.length}
+                    isLiked={post.likes.includes(CURRENT_USER_ID)}
+                    onToggleLike={() => void toggleLike(post.id)}
+                    likeDisabled={pendingLikePostId === post.id}
+                    postId={post.id}
+                    detailedComments={false}
+                />
+            </>
           <PostCard
             key={post.id}
             postId={post.id}
@@ -55,6 +70,7 @@ function Homepage() {
             isLiked={post.likes.includes(currentUserId)}
             onToggleLike={() => void toggleLike(post.id)}
             likeDisabled={pendingLikePostId === post.id}
+            detailedComments={false}
           />
         ))}
       </section>
