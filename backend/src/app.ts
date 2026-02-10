@@ -1,5 +1,6 @@
 ﻿import express from "express";
 import userRoutes from "./routes/user.routes";
+import commentRoutes from './routes/comment.routes';
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/users", userRoutes);
+app.use("/comments", commentRoutes);
 
 app.get("/", (req, res) => {
     res.send("API running.");
