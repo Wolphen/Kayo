@@ -38,7 +38,7 @@ function App() {
     setIsSubmitting(true);
 
     try {
-      await axios.post(`http://localhost:3001/usert`, {
+      await axios.post(`http://localhost:3001/users`, {
         username: username.trim(),
         email: email.trim(),
         password,
@@ -153,7 +153,11 @@ function App() {
             {error ? <Alert color="failure">{error}</Alert> : null}
             {success ? <Alert color="success">{success}</Alert> : null}
 
-            <Button type="submit" className="w-full test text-black" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full test text-black"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Creating..." : "Create account"}
             </Button>
           </form>
