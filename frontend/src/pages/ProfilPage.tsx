@@ -183,6 +183,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
                     </Button>
                   ) : (
                     <Button
+
                       color={isFollowing ? "gray" : "blue"}
                       onClick={toggleFollow}
                       disabled={isFollowSubmitting}
@@ -242,14 +243,18 @@ function ProfilPage({ userId }: ProfilPageProps) {
               {posts.map((post) => (
                 <PostCard
                   key={post.id}
+                  postId={post.id}
                   imageUrl={post.imageUrl}
                   content={post.content}
                   createdAt={post.createdAt}
                   authorName={user?.username}
-                  likeCount={post.likes.length}
+                  authorId={user?.id}
+                  likeCount={post.likes}
                 />
               ))}
             </div>
+          ) : (
+            <p>This profile is private. Follow to see posts.</p>
           )}
         </section>
       </div>

@@ -4,7 +4,7 @@ export const posts: Post[] = [
     {
         id: "p1",
         authorId: "u1",
-        content: "Prototype day. Pushed a new nav flow.",
+        content: "Prototype day. Pushed a new nav flow.Prototype day. Pushed a new nav flow.Prototype day. Pushed a new nav flow.Prototype day. Pushed a new nav flow.Prototype day. Pushed a new nav flow.Prototype day. Pushed a new nav flow.Prototype day. Pushed a new nav flow.Prototype day. Pushed a new nav flow.",
         imageUrl: "https://picsum.photos/seed/p1/600/400",
         createdAt: new Date("2025-10-01T09:00:00Z"),
         modifiedAt: new Date("2025-10-01T09:00:00Z"),

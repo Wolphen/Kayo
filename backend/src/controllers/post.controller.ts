@@ -7,6 +7,17 @@ export const getPosts = (req: Request, res: Response) => {
     res.json(service.getPosts());
 };
 
+export const getPost = (req: Request, res: Response) => {
+    try {
+        const post = service.getPostById(req.params.id);
+        res.json(post);
+    } catch (error) {
+        const message = (error as Error).message;
+        const status = message === "Post not found" ? 404 : 400;
+        res.status(status).json({ message });
+    }
+};
+
 export const togglePostLike = (req: Request, res: Response) => {
     try {
         const post = service.toggleLike(req.params.id, req.body?.userId);

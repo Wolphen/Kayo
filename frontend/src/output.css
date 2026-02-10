@@ -1954,6 +1954,9 @@
   .origin-\[0\] {
     transform-origin: 0;
   }
+  .origin-left {
+    transform-origin: 0;
+  }
   .-translate-x-1\/2 {
     --tw-translate-x: calc(calc(1/2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);

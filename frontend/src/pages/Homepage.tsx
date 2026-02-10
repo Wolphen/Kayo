@@ -45,10 +45,12 @@ function Homepage() {
         {sortedPosts.map((post) => (
           <PostCard
             key={post.id}
+            postId={post.id}
             imageUrl={post.imageUrl}
             content={post.content}
             createdAt={post.createdAt}
             authorName={usersById[post.authorId]?.username ?? "Unknown user"}
+            authorId={post.authorId}
             likeCount={post.likes.length}
             isLiked={post.likes.includes(CURRENT_USER_ID)}
             onToggleLike={() => void toggleLike(post.id)}
