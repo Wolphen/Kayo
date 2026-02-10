@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import Homepage from "./pages/Homepage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
-import ProfilPage from "./pages/ProfilPage"; 
+import ProfilPage from "./pages/ProfilPage";
 
 function App() {
   const [pathname, setPathname] = useState(window.location.pathname);
@@ -30,7 +30,12 @@ function App() {
   }
 
   return (
-    <main style={{ padding: "24px", fontFamily: "Avenir Next, Segoe UI, sans-serif" }}>
+    <main
+      style={{
+        padding: "24px",
+        fontFamily: "Avenir Next, Segoe UI, sans-serif",
+      }}
+    >
       <h1>Page non trouvee</h1>
       <p>Essaie /feed ou /register.</p>
     </main>
