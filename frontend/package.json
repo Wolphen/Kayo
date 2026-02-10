@@ -12,6 +12,7 @@
     "tailwind:watch": "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch"
   },
   "dependencies": {
+    "axios": "^1.13.5",
     "flowbite": "^3.1.2",
     "flowbite-react": "^0.12.17",
     "react": "^19.2.0",
