@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { Badge, Button, Card } from "flowbite-react";
 import "../assets/css/profile.css";
+import EditProfileModal from "../components/EditProfileModal";
+
 import PostCard from "../components/PostCard";
 
 type ProfilPageProps = {
   userId?: string;
 };
 
+// TODO(auth): replace this with the authenticated user's id from the token/session.
 const CURRENT_USER_ID = "u1";
 
 const getUserIdFromPath = () => {
@@ -30,6 +33,9 @@ function ProfilPage({ userId }: ProfilPageProps) {
   }>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+  const [isFollowSubmitting, setIsFollowSubmitting] = useState<boolean>(false);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+
 
   const mockPostsByUser: Record<
     string,
@@ -130,6 +136,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
       try {
         setError("");
         setIsLoading(true);
+        // TODO(auth): include the access token in Authorization headers.
         const response = await fetch("http://localhost:3001/users");
         if (!response.ok) {
           throw new Error("Failed to fetch users");
@@ -159,6 +166,41 @@ function ProfilPage({ userId }: ProfilPageProps) {
     : "";
 
   const isOwnProfile = user?.id === CURRENT_USER_ID;
+  const isFollowing = !!user?.followers?.includes(CURRENT_USER_ID);
+  const canViewPosts = isOwnProfile || user?.isPublic || isFollowing;
+
+  const toggleFollow = async () => {
+    if (!user || isOwnProfile) return;
+    try {
+      setIsFollowSubmitting(true);
+      setError("");
+      const endpoint = isFollowing ? "unfollow" : "follow";
+      // TODO(auth): include the access token in Authorization headers.
+      const response = await fetch(
+        `http://localhost:3001/users/${user.id}/${endpoint}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ followerId: CURRENT_USER_ID }),
+        },
+      );
+      if (!response.ok) {
+        throw new Error(
+          isFollowing ? "Failed to unfollow user" : "Failed to follow user",
+        );
+      }
+      const result = (await response.json()) as {
+        follower: typeof user;
+        target: typeof user;
+      };
+      setUser(result.target);
+    } catch (err) {
+      setError((err as Error).message || "Failed to update follow status");
+    } finally {
+      setIsFollowSubmitting(false);
+    }
+  };
+
 
   return (
     <main className="profile-page">
@@ -191,8 +233,9 @@ function ProfilPage({ userId }: ProfilPageProps) {
                 <div className="profile-actions">
                   {isOwnProfile ? (
                     <>
-                      <Button color="light">Edit profile</Button>
-                      <Button color="gray">Settings</Button>
+                      <Button color="light" onClick={() => setIsEditOpen(true)}>
+                        Edit profile
+                      </Button>
                     </>
                   ) : (
                     <Button color="blue">Follow</Button>
@@ -243,6 +286,20 @@ function ProfilPage({ userId }: ProfilPageProps) {
           </div>
         </section>
       </div>
+      {isEditOpen && user ? (
+        <EditProfileModal
+          userId={user.id}
+          initialEmail={user.email}
+          initialUsername={user.username}
+          initialBio={user.bio}
+          initialIsPublic={user.isPublic}
+          onClose={() => setIsEditOpen(false)}
+          onSaved={(updated) => {
+            setUser((prev) => (prev ? { ...prev, ...updated } : prev));
+            setIsEditOpen(false);
+          }}
+        />
+      ) : null}
     </main>
   );
 }
