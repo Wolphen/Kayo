@@ -1,4 +1,5 @@
-import { useState } from "react";
+﻿import { useState } from "react";
+import axios from "axios";
 import { Alert, Button, Card, ToggleSwitch } from "flowbite-react";
 import "./assets/css/auth.css";
 
@@ -9,10 +10,13 @@ function App() {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [isPublic, setIsPublic] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
     if (!username.trim()) {
       setError("Username is required.");
@@ -29,6 +33,33 @@ function App() {
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await axios.post(`http://localhost:3001/usert`, {
+        username: username.trim(),
+        email: email.trim(),
+        password,
+        isPublic,
+      });
+
+      setSuccess("Account created successfully.");
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      setIsPublic(false);
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        const message = err.response?.data?.message;
+        setError(message || "Registration failed/API ERROR");
+      } else {
+        setError("Registration failed.");
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -120,9 +151,10 @@ function App() {
             </div>
 
             {error ? <Alert color="failure">{error}</Alert> : null}
+            {success ? <Alert color="success">{success}</Alert> : null}
 
-            <Button type="submit" className="w-full test text-black">
-              Create account
+            <Button type="submit" className="w-full test text-black" disabled={isSubmitting}>
+              {isSubmitting ? "Creating..." : "Create account"}
             </Button>
           </form>
           <p className="form-footer">

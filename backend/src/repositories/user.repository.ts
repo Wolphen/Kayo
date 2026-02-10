@@ -1,7 +1,7 @@
-import { users } from "../data/users.mock";
-import { User } from "../data/type"
-import {CreateUserDto} from "../dtos/user/create-user.dto";
-import {randomUUID} from "node:crypto";
+﻿import { users } from "../data/users.mock";
+import { User } from "../data/type";
+import { CreateUserDto } from "../dtos/user/create-user.dto";
+import { randomUUID } from "node:crypto";
 
 export class UserRepository {
     findAll(): User[] {
@@ -9,11 +9,11 @@ export class UserRepository {
     }
 
     findById(id: string | string[]): User | undefined {
-        return users.find(user => user.id === id);
+        return users.find((user) => user.id === id);
     }
 
     findByEmail(email: string): User | undefined {
-        return users.find(user => user.email === email);
+        return users.find((user) => user.email === email);
     }
 
     create(data: CreateUserDto): User {
@@ -21,13 +21,13 @@ export class UserRepository {
             id: randomUUID(),
             email: data.email,
             username: data.username,
-            password: data.password, // ⚠️ hash plus tard
+            password: data.password, // hash later
             isAdmin: false,
             photoUrl: "",
             bio: "",
             followers: [],
             following: [],
-            isPublic: true,
+            isPublic: data.isPublic ?? true,
             createdAt: new Date(),
             modifiedAt: new Date(),
         };
