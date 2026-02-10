@@ -4,12 +4,13 @@ import {CommentService} from "../services/comment.service";
 const service = new CommentService()
 
 export const getCommentsByPostId = (req: any, res: any) => {
-    try {
-        const comments = service.getCommentsByPostId(req.params.postId);
-        res.json(comments);
-    } catch (error) {
-        res.status(404).json({ message: (error as Error).message });
-    }
+    const comments = service.getCommentsByPostId(req.params.postId);
+    res.status(200).json(comments);
+};
+
+export const getLastCommentByPostId = (req: any, res: any) => {
+    const comment = service.getLastCommentByPostId(req.params.postId);
+    res.status(200).json(comment);
 };
 
 export const createComment = (req: any, res: any) => {

@@ -1,4 +1,5 @@
 import "../assets/css/PostCard.css";
+import CommentsComponent from "./CommentsComponent.tsx";
 
 type PostCardProps = {
   imageUrl: string;
@@ -9,6 +10,8 @@ type PostCardProps = {
   isLiked?: boolean;
   onToggleLike?: () => void;
   likeDisabled?: boolean;
+  postId: string;
+    detailedComments?: boolean;
 };
 
 function PostCard({
@@ -19,7 +22,7 @@ function PostCard({
   likeCount,
   isLiked = false,
   onToggleLike,
-  likeDisabled = false,
+  likeDisabled = false, postId, detailedComments = false
 }: PostCardProps) {
   const formattedDate = new Date(createdAt).toLocaleDateString("fr-FR", {
     day: "2-digit",
@@ -56,6 +59,7 @@ function PostCard({
             </svg>
           </button>
         </div>
+        <CommentsComponent postId={postId} details={detailedComments} />
       </div>
     </article>
   );
