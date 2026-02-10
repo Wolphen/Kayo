@@ -12,121 +12,15 @@
   gap: 20px;
 }
 
-.home-card {
-  width: 100%;
-  max-width: none;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #ffffff;
-}
-
-.home-card-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
-
-.home-card-body {
-  padding: 18px;
-  text-align: left;
-  min-height: 150px;
-  display: flex;
-  flex-direction: column;
-}
-
-.home-badge {
-  display: inline-flex;
-  background: #dbeafe;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-  border-radius: 6px;
-}
-
-.home-card-title {
-  margin: 14px 0 6px;
-  color: #0f172a;
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.home-card-description {
-  margin: 0 0 6px;
+.home-state {
+  max-width: 900px;
+  margin: 0 auto 14px;
   font-size: 14px;
-  color: rgba(15, 23, 42, 0.52);
-  line-height: 1.45;
-}
-
-.home-card-author {
-  margin: 0 0 8px;
-  font-size: 15px;
-  font-weight: 700;
   color: #334155;
 }
 
-.home-card-date {
-  margin: auto 0 0;
-  font-size: 13px;
-  color: #64748b;
-}
-
-.home-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.home-like-count {
-  font-size: 16px;
-  color: #ef4444;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.home-like-icon-btn {
-  border: none;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.home-like-icon-btn:disabled {
-  opacity: 0.6;
-  cursor: wait;
-}
-
-.home-like-icon {
-  width: 24px;
-  height: 24px;
-  fill: transparent;
-  stroke: #ef4444;
-  stroke-width: 1.9;
-  transition: fill 160ms ease, transform 160ms ease;
-}
-
-.home-like-icon-btn:hover .home-like-icon {
-  transform: scale(1.08);
-}
-
-.home-like-icon-btn.liked .home-like-icon {
-  fill: #ef4444;
-}
-
-.home-card-btn {
-  display: inline-flex;
-  border-radius: 10px;
-  background: #2563eb;
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.home-card-btn:hover {
-  background: #1d4ed8;
+.home-state-error {
+  color: #dc2626;
 }
 
 @media (max-width: 768px) {

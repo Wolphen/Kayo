@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Badge, Button, Card } from "flowbite-react";
 import "../assets/css/profile.css";
+import PostCard from "../components/PostCard";
 
 type ProfilPageProps = {
   userId?: string;
@@ -29,8 +30,6 @@ function ProfilPage({ userId }: ProfilPageProps) {
   }>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
-  const [isFollowSubmitting, setIsFollowSubmitting] =
-    useState<boolean>(false);
 
   const mockPostsByUser: Record<
     string,
@@ -62,7 +61,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
       },
       {
         id: "p21",
-        content: "Testing a softer brand voice for onboarding.",
+        content: "Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.",
         imageUrl: "https://picsum.photos/seed/p21/900/500",
         createdAt: "2025-10-28T12:05:00.000Z",
         likes: 9,
@@ -160,39 +159,6 @@ function ProfilPage({ userId }: ProfilPageProps) {
     : "";
 
   const isOwnProfile = user?.id === CURRENT_USER_ID;
-  const isFollowing = !!user?.followers?.includes(CURRENT_USER_ID);
-  const canViewPosts = isOwnProfile || user?.isPublic || isFollowing;
-
-  const toggleFollow = async () => {
-    if (!user || isOwnProfile) return;
-    try {
-      setIsFollowSubmitting(true);
-      setError("");
-      const endpoint = isFollowing ? "unfollow" : "follow";
-      const response = await fetch(
-        `http://localhost:3001/users/${user.id}/${endpoint}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ followerId: CURRENT_USER_ID }),
-        },
-      );
-      if (!response.ok) {
-        throw new Error(
-          isFollowing ? "Failed to unfollow user" : "Failed to follow user",
-        );
-      }
-      const result = (await response.json()) as {
-        follower: typeof user;
-        target: typeof user;
-      };
-      setUser(result.target);
-    } catch (err) {
-      setError((err as Error).message || "Failed to update follow status");
-    } finally {
-      setIsFollowSubmitting(false);
-    }
-  };
 
   return (
     <main className="profile-page">
@@ -229,19 +195,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
                       <Button color="gray">Settings</Button>
                     </>
                   ) : (
-                    <Button
-                      color={isFollowing ? "gray" : "blue"}
-                      onClick={toggleFollow}
-                      disabled={isFollowSubmitting}
-                    >
-                      {isFollowSubmitting
-                        ? isFollowing
-                          ? "Unfollowing..."
-                          : "Following..."
-                        : isFollowing
-                          ? "Following"
-                          : "Follow"}
-                    </Button>
+                    <Button color="blue">Follow</Button>
                   )}
                 </div>
               </div>
@@ -275,43 +229,18 @@ function ProfilPage({ userId }: ProfilPageProps) {
             </div>
             {isOwnProfile ? <Button color="light">New post</Button> : null}
           </div>
-
-          {!canViewPosts ? (
-            <Card className="post-card">
-              <div className="post-body">
-                <p className="post-content">This profile is private.</p>
-                <p className="post-date">
-                  Follow this user to see their posts.
-                </p>
-              </div>
-            </Card>
-          ) : (
-            <div className="post-grid">
-              {posts.map((post) => (
-                <Card key={post.id} className="post-card">
-                  <img
-                    className="post-image"
-                    src={post.imageUrl}
-                    alt="Post illustration"
-                  />
-                  <div className="post-body">
-                    <p className="post-date">
-                      {new Date(post.createdAt).toLocaleDateString("en-US", {
-                        weekday: "short",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </p>
-                    <p className="post-content">{post.content}</p>
-                    <div className="post-footer">
-                      <span>{post.likes} likes</span>
-                      <span>{post.comments} comments</span>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          )}
+          <div className="post-grid">
+            {posts.map((post) => (
+              <PostCard
+                key={post.id}
+                imageUrl={post.imageUrl}
+                content={post.content}
+                createdAt={post.createdAt}
+                authorName={user?.username}
+                likeCount={post.likes}
+              />
+            ))}
+          </div>
         </section>
       </div>
     </main>

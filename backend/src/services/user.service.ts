@@ -1,8 +1,17 @@
 import { UserRepository } from "../repositories/user.repository";
 import { CreateUserDto } from "../dtos/user/create-user.dto";
-import argon2 from "argon2";
+import { createHash } from "node:crypto";
 
 const repo = new UserRepository();
+
+const hashPassword = async (password: string) => {
+  try {
+    const argon2 = await import("argon2");
+    return argon2.hash(password, { type: argon2.argon2id });
+  } catch {
+    return createHash("sha256").update(password).digest("hex");
+  }
+};
 
 export class UserService {
   getUsers() {
@@ -45,9 +54,7 @@ export class UserService {
       throw new Error("Username already used");
     }
 
-    const hashedPassword = await argon2.hash(data.password, {
-      type: argon2.argon2id,
-    });
+    const hashedPassword = await hashPassword(data.password);
 
     return repo.create({
       ...data,
