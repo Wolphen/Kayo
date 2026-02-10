@@ -29,6 +29,12 @@ function App() {
     return <ProfilPage />;
   }
 
+  if (pathname.startsWith("/profil/")) {
+    const parts = pathname.split("/").filter(Boolean);
+    const id = parts[1] ?? "";
+    return <ProfilPage userId={id} />;
+  }
+
   return (
     <main
       style={{
