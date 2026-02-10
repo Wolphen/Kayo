@@ -35,8 +35,9 @@ function ProfilPage({ userId }: ProfilPageProps) {
   const [error, setError] = useState<string>("");
   const [isFollowSubmitting, setIsFollowSubmitting] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
-  const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(null);
-
+  const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(
+    null,
+  );
 
   const [posts, setPosts] = useState<
     {
@@ -109,7 +110,8 @@ function ProfilPage({ userId }: ProfilPageProps) {
     : "";
 
   const isOwnProfile = !!currentUserId && user?.id === currentUserId;
-  const isFollowing = !!currentUserId && !!user?.followers?.includes(currentUserId);
+  const isFollowing =
+    !!currentUserId && !!user?.followers?.includes(currentUserId);
   const canViewPosts = isOwnProfile || user?.isPublic || isFollowing;
 
   const toggleFollow = async () => {
@@ -158,11 +160,14 @@ function ProfilPage({ userId }: ProfilPageProps) {
     try {
       setPendingLikePostId(postId);
       setError("");
-      const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: currentUserId }),
-      });
+      const response = await fetch(
+        `http://localhost:3001/posts/${postId}/like`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: currentUserId }),
+        },
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update like");
@@ -186,7 +191,6 @@ function ProfilPage({ userId }: ProfilPageProps) {
       setPendingLikePostId(null);
     }
   };
-
 
   return (
     <main className="profile-page">
@@ -223,7 +227,6 @@ function ProfilPage({ userId }: ProfilPageProps) {
                     </Button>
                   ) : (
                     <Button
-
                       color={isFollowing ? "gray" : "blue"}
                       onClick={toggleFollow}
                       disabled={isFollowSubmitting}
@@ -280,21 +283,27 @@ function ProfilPage({ userId }: ProfilPageProps) {
             </Card>
           ) : (
             <div className="post-grid">
-              {posts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  postId={post.id}
-                  imageUrl={post.imageUrl}
-                  content={post.content}
-                  createdAt={post.createdAt}
-                  authorName={user?.username}
-                  authorId={user?.id}
-                  likeCount={post.likes.length}
-                  isLiked={post.likes.includes(currentUserId)}
-                  onToggleLike={() => void toggleLike(post.id)}
-                  likeDisabled={pendingLikePostId === post.id}
-                />
-              ))}
+              {posts
+                .sort(
+                  (a, b) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime(),
+                )
+                .map((post) => (
+                  <PostCard
+                    key={post.id}
+                    postId={post.id}
+                    imageUrl={post.imageUrl}
+                    content={post.content}
+                    createdAt={post.createdAt}
+                    authorName={user?.username}
+                    authorId={user?.id}
+                    likeCount={post.likes.length}
+                    isLiked={post.likes.includes(currentUserId)}
+                    onToggleLike={() => void toggleLike(post.id)}
+                    likeDisabled={pendingLikePostId === post.id}
+                  />
+                ))}
             </div>
           )}
         </section>
