@@ -13,20 +13,17 @@ function App() {
     return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
-  if (pathname === "/") {
-    return <Homepage />;
-  }
-
-  if (pathname === "/register") {
-    return <RegisterPage />;
-  }
-
-  if (pathname === "/login") {
-    return <LoginPage />;
-  }
-
-  if (pathname === "/profil") {
-    return <ProfilPage />;
+  switch (pathname) {
+    case "/":
+      return <Homepage />;
+    case "/register":
+      return <RegisterPage />;
+    case "/login":
+      return <LoginPage />;
+    case "/profil":
+      return <ProfilPage />;
+    default:
+      break;
   }
 
   return (
