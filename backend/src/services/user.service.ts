@@ -128,7 +128,13 @@ export class UserService {
 
   updateUser(
     id: string,
-    data: { email?: string; username?: string; bio?: string; isPublic?: boolean },
+    data: {
+      email?: string;
+      username?: string;
+      bio?: string;
+      isPublic?: boolean;
+      photoUrl?: string;
+    },
   ) {
     const user = repo.findById(id);
     if (!user) {
@@ -140,6 +146,7 @@ export class UserService {
     const bio = data.bio?.trim();
     const isPublic =
       typeof data.isPublic === "boolean" ? data.isPublic : undefined;
+    const photoUrl = data.photoUrl?.trim();
 
     if (email) {
       const existingEmail = repo.findByEmail(email);
@@ -160,6 +167,7 @@ export class UserService {
       username: username ?? user.username,
       bio: bio ?? user.bio,
       isPublic: isPublic ?? user.isPublic,
+      photoUrl: photoUrl ?? user.photoUrl,
     });
   }
 }
