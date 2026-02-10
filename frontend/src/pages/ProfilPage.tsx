@@ -35,6 +35,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
   const [error, setError] = useState<string>("");
   const [isFollowSubmitting, setIsFollowSubmitting] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(null);
 
 
   const [posts, setPosts] = useState<
@@ -147,6 +148,45 @@ function ProfilPage({ userId }: ProfilPageProps) {
     }
   };
 
+  const toggleLike = async (postId: string) => {
+    if (!currentUserId) {
+      setError("You must be logged in to like posts.");
+      return;
+    }
+    if (pendingLikePostId) return;
+
+    try {
+      setPendingLikePostId(postId);
+      setError("");
+      const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: currentUserId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update like");
+      }
+
+      const updatedPost = (await response.json()) as {
+        id: string;
+        authorId: string;
+        content: string;
+        imageUrl: string;
+        createdAt: string;
+        likes: string[];
+      };
+
+      setPosts((prev) =>
+        prev.map((post) => (post.id === updatedPost.id ? updatedPost : post)),
+      );
+    } catch (err) {
+      setError((err as Error).message || "Failed to update like");
+    } finally {
+      setPendingLikePostId(null);
+    }
+  };
+
 
   return (
     <main className="profile-page">
@@ -249,12 +289,13 @@ function ProfilPage({ userId }: ProfilPageProps) {
                   createdAt={post.createdAt}
                   authorName={user?.username}
                   authorId={user?.id}
-                  likeCount={post.likes}
+                  likeCount={post.likes.length}
+                  isLiked={post.likes.includes(currentUserId)}
+                  onToggleLike={() => void toggleLike(post.id)}
+                  likeDisabled={pendingLikePostId === post.id}
                 />
               ))}
             </div>
-          ) : (
-            <p>This profile is private. Follow to see posts.</p>
           )}
         </section>
       </div>
