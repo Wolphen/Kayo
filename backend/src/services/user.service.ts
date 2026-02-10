@@ -1,3 +1,4 @@
+import argon2 from "argon2";
 import { UserRepository } from "../repositories/user.repository";
 import { CreateUserDto } from "../dtos/user/create-user.dto";
 import { createHash } from "node:crypto";
