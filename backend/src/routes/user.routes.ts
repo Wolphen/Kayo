@@ -7,12 +7,11 @@ import {
     unfollowUser,
     updateUser,
 } from "../controllers/user.controller";
-import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.get("/", authMiddleware, getUsers);
-router.get("/:id", authMiddleware, getUser);
+router.get("/", getUsers);
+router.get("/:id", getUser);
 router.post("/", createUser);
 router.patch("/:id", updateUser);
 router.post("/:id/follow", followUser);
