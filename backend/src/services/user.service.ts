@@ -63,4 +63,65 @@ export class UserService {
       password: hashedPassword,
     });
   }
+
+  followUser(followerId: string, targetId: string) {
+    if (!followerId || !targetId) {
+      throw new Error("Follower and target are required");
+    }
+
+    if (followerId === targetId) {
+      throw new Error("You cannot follow yourself");
+    }
+
+    const follower = repo.findById(followerId);
+    if (!follower) {
+      throw new Error("Follower not found");
+    }
+
+    const target = repo.findById(targetId);
+    if (!target) {
+      throw new Error("Target user not found");
+    }
+
+    if (!follower.following.includes(targetId)) {
+      follower.following.push(targetId);
+    }
+
+    if (!target.followers.includes(followerId)) {
+      target.followers.push(followerId);
+    }
+
+    follower.modifiedAt = new Date();
+    target.modifiedAt = new Date();
+
+    return { follower, target };
+  }
+
+  unfollowUser(followerId: string, targetId: string) {
+    if (!followerId || !targetId) {
+      throw new Error("Follower and target are required");
+    }
+
+    if (followerId === targetId) {
+      throw new Error("You cannot unfollow yourself");
+    }
+
+    const follower = repo.findById(followerId);
+    if (!follower) {
+      throw new Error("Follower not found");
+    }
+
+    const target = repo.findById(targetId);
+    if (!target) {
+      throw new Error("Target user not found");
+    }
+
+    follower.following = follower.following.filter((id) => id !== targetId);
+    target.followers = target.followers.filter((id) => id !== followerId);
+
+    follower.modifiedAt = new Date();
+    target.modifiedAt = new Date();
+
+    return { follower, target };
+  }
 }
