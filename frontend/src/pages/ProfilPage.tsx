@@ -158,6 +158,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
     : "";
 
   const isOwnProfile = user?.id === CURRENT_USER_ID;
+  const canViewPosts = isOwnProfile || user?.isPublic;
 
   return (
     <main className="profile-page">
@@ -228,31 +229,43 @@ function ProfilPage({ userId }: ProfilPageProps) {
             </div>
             {isOwnProfile ? <Button color="light">New post</Button> : null}
           </div>
-          <div className="post-grid">
-            {posts.map((post) => (
-              <Card key={post.id} className="post-card">
-                <img
-                  className="post-image"
-                  src={post.imageUrl}
-                  alt="Post illustration"
-                />
-                <div className="post-body">
-                  <p className="post-date">
-                    {new Date(post.createdAt).toLocaleDateString("en-US", {
-                      weekday: "short",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </p>
-                  <p className="post-content">{post.content}</p>
-                  <div className="post-footer">
-                    <span>{post.likes} likes</span>
-                    <span>{post.comments} comments</span>
+
+          {!canViewPosts ? (
+            <Card className="post-card">
+              <div className="post-body">
+                <p className="post-content">This profile is private.</p>
+                <p className="post-date">
+                  Follow this user to see their posts.
+                </p>
+              </div>
+            </Card>
+          ) : (
+            <div className="post-grid">
+              {posts.map((post) => (
+                <Card key={post.id} className="post-card">
+                  <img
+                    className="post-image"
+                    src={post.imageUrl}
+                    alt="Post illustration"
+                  />
+                  <div className="post-body">
+                    <p className="post-date">
+                      {new Date(post.createdAt).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </p>
+                    <p className="post-content">{post.content}</p>
+                    <div className="post-footer">
+                      <span>{post.likes} likes</span>
+                      <span>{post.comments} comments</span>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </main>
