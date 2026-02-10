@@ -117,4 +117,41 @@ export class UserService {
 
     return { follower, target };
   }
+
+  updateUser(
+    id: string,
+    data: { email?: string; username?: string; bio?: string; isPublic?: boolean },
+  ) {
+    const user = repo.findById(id);
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const email = data.email?.trim().toLowerCase();
+    const username = data.username?.trim();
+    const bio = data.bio?.trim();
+    const isPublic =
+      typeof data.isPublic === "boolean" ? data.isPublic : undefined;
+
+    if (email) {
+      const existingEmail = repo.findByEmail(email);
+      if (existingEmail && existingEmail.id !== id) {
+        throw new Error("Email already used");
+      }
+    }
+
+    if (username) {
+      const existingUsername = repo.findByUsername(username);
+      if (existingUsername && existingUsername.id !== id) {
+        throw new Error("Username already used");
+      }
+    }
+
+    return repo.update(user, {
+      email: email ?? user.email,
+      username: username ?? user.username,
+      bio: bio ?? user.bio,
+      isPublic: isPublic ?? user.isPublic,
+    });
+  }
 }
