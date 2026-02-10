@@ -22,4 +22,18 @@ export class CommentService {
 
         return repo.create(data);
     }
+
+    deleteComment(commentId: string | string[]) {
+        try{
+            const deletedComment = repo.deleteById(commentId);
+
+            if (!deletedComment) {
+                throw new Error("Comment not found");
+            }
+
+            return { message: "Comment deleted successfully", comment: deletedComment };
+        } catch(err) {
+            throw new Error((err as Error).message || "Failed to delete comment");
+        }
+    }
 }

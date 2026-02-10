@@ -1,13 +1,11 @@
-import { comments } from "../data/comments.mock";
-import { Comment } from "../data/type";
-import { CreateCommentDto } from "../dtos/comment/create-comment.dto";
-import { randomUUID } from "node:crypto";
+import {comments} from "../data/comments.mock";
+import {Comment} from "../data/type";
+import {CreateCommentDto} from "../dtos/comment/create-comment.dto";
+import {randomUUID} from "node:crypto";
 
 export class CommentRepository{
 
     findByPostId(postId: string | string[]): Comment | undefined{
-        console.log(postId);
-        console.log(comments);
         return comments.find((comment) => comment.postId === postId);
     }
 
@@ -24,5 +22,13 @@ export class CommentRepository{
 
         comments.push(newComment);
         return newComment;
+    }
+
+    deleteById(id: string | string[]): Comment | undefined{
+        const index = comments.findIndex((comment) => comment.id === id);
+        if (index !== -1) {
+            return comments.splice(index, 1)[0];
+        }
+        return undefined;
     }
 }
