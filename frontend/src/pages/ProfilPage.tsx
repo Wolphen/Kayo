@@ -29,6 +29,8 @@ function ProfilPage({ userId }: ProfilPageProps) {
   }>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+  const [isFollowSubmitting, setIsFollowSubmitting] =
+    useState<boolean>(false);
 
   const mockPostsByUser: Record<
     string,
@@ -158,7 +160,39 @@ function ProfilPage({ userId }: ProfilPageProps) {
     : "";
 
   const isOwnProfile = user?.id === CURRENT_USER_ID;
-  const canViewPosts = isOwnProfile || user?.isPublic;
+  const isFollowing = !!user?.followers?.includes(CURRENT_USER_ID);
+  const canViewPosts = isOwnProfile || user?.isPublic || isFollowing;
+
+  const toggleFollow = async () => {
+    if (!user || isOwnProfile) return;
+    try {
+      setIsFollowSubmitting(true);
+      setError("");
+      const endpoint = isFollowing ? "unfollow" : "follow";
+      const response = await fetch(
+        `http://localhost:3001/users/${user.id}/${endpoint}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ followerId: CURRENT_USER_ID }),
+        },
+      );
+      if (!response.ok) {
+        throw new Error(
+          isFollowing ? "Failed to unfollow user" : "Failed to follow user",
+        );
+      }
+      const result = (await response.json()) as {
+        follower: typeof user;
+        target: typeof user;
+      };
+      setUser(result.target);
+    } catch (err) {
+      setError((err as Error).message || "Failed to update follow status");
+    } finally {
+      setIsFollowSubmitting(false);
+    }
+  };
 
   return (
     <main className="profile-page">
@@ -195,7 +229,19 @@ function ProfilPage({ userId }: ProfilPageProps) {
                       <Button color="gray">Settings</Button>
                     </>
                   ) : (
-                    <Button color="blue">Follow</Button>
+                    <Button
+                      color={isFollowing ? "gray" : "blue"}
+                      onClick={toggleFollow}
+                      disabled={isFollowSubmitting}
+                    >
+                      {isFollowSubmitting
+                        ? isFollowing
+                          ? "Unfollowing..."
+                          : "Following..."
+                        : isFollowing
+                          ? "Following"
+                          : "Follow"}
+                    </Button>
                   )}
                 </div>
               </div>
