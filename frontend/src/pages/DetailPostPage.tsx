@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import "../assets/css/DetailPostPage.css";
+import { useAuth } from "../context/AuthContext";
 
 type DetailPostPageProps = {
   postId: string;
@@ -23,9 +24,10 @@ type UserPreview = {
 
 const POSTS_API_URL = "http://localhost:3001/posts";
 const USERS_API_URL = "http://localhost:3001/users";
-const CURRENT_USER_ID = "u1";
 
 function DetailPostPage({ postId }: DetailPostPageProps) {
+  const { user } = useAuth();
+  const currentUserId = user?.id ?? "";
   const [post, setPost] = useState<Post | null>(null);
   const [author, setAuthor] = useState<UserPreview | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -57,11 +59,15 @@ function DetailPostPage({ postId }: DetailPostPageProps) {
 
   const toggleLike = async () => {
     if (!post || isLikePending) return;
+    if (!currentUserId) {
+      setError("You must be logged in to like posts.");
+      return;
+    }
 
     setIsLikePending(true);
     try {
       const response = await axios.put<Post>(`${POSTS_API_URL}/${post.id}/like`, {
-        userId: CURRENT_USER_ID,
+        userId: currentUserId,
       });
       setPost(response.data);
     } catch {
@@ -104,7 +110,7 @@ function DetailPostPage({ postId }: DetailPostPageProps) {
               <button
                 type="button"
                 className={`detail-post-like-btn ${
-                  post.likes.includes(CURRENT_USER_ID) ? "liked" : ""
+                  post.likes.includes(currentUserId) ? "liked" : ""
                 }`}
                 onClick={() => void toggleLike()}
                 disabled={isLikePending}

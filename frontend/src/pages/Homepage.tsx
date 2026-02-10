@@ -1,11 +1,11 @@
 import "../assets/css/Homepage.css";
 import PostCard from "../components/PostCard";
-import { CURRENT_USER_ID, usePostsFeed } from "../hooks/usePostsFeed";
+import { usePostsFeed } from "../hooks/usePostsFeed";
 import { useAuth } from "../context/AuthContext";
 
 function Homepage() {
   const { logout } = useAuth();
-  const { sortedPosts, usersById, pendingLikePostId, isLoading, error, toggleLike } =
+  const { sortedPosts, usersById, currentUserId, pendingLikePostId, isLoading, error, toggleLike } =
     usePostsFeed();
   const isEmpty = !isLoading && !error && sortedPosts.length === 0;
 
@@ -52,7 +52,7 @@ function Homepage() {
             authorName={usersById[post.authorId]?.username ?? "Unknown user"}
             authorId={post.authorId}
             likeCount={post.likes.length}
-            isLiked={post.likes.includes(CURRENT_USER_ID)}
+            isLiked={post.likes.includes(currentUserId)}
             onToggleLike={() => void toggleLike(post.id)}
             likeDisabled={pendingLikePostId === post.id}
           />
