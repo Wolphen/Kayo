@@ -1,6 +1,10 @@
 ﻿import express from "express";
 import userRoutes from "./routes/user.routes";
+<<<<<<< HEAD
 import commentRoutes from './routes/comment.routes';
+=======
+import postRoutes from "./routes/post.routes";
+>>>>>>> feature/STORY-3_handlingPost
 
 const app = express();
 
@@ -21,7 +25,11 @@ app.use((req, res, next) => {
 });
 
 app.use("/users", userRoutes);
+<<<<<<< HEAD
 app.use("/comments", commentRoutes);
+=======
+app.use("/posts", postRoutes);
+>>>>>>> feature/STORY-3_handlingPost
 
 app.get("/", (req, res) => {
     res.send("API running.");
