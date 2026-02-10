@@ -7,6 +7,7 @@ type EditProfileModalProps = {
   initialUsername: string;
   initialBio: string;
   initialIsPublic: boolean;
+  initialPhotoUrl: string;
   onClose: () => void;
   onSaved: (user: {
     id: string;
@@ -14,6 +15,7 @@ type EditProfileModalProps = {
     username: string;
     bio: string;
     isPublic: boolean;
+    photoUrl: string;
   }) => void;
 };
 
@@ -23,6 +25,7 @@ function EditProfileModal({
   initialUsername,
   initialBio,
   initialIsPublic,
+  initialPhotoUrl,
   onClose,
   onSaved,
 }: EditProfileModalProps) {
@@ -30,6 +33,7 @@ function EditProfileModal({
   const [username, setUsername] = useState<string>(initialUsername);
   const [bio, setBio] = useState<string>(initialBio);
   const [isPublic, setIsPublic] = useState<boolean>(initialIsPublic);
+  const [photoUrl, setPhotoUrl] = useState<string>(initialPhotoUrl);
   const [error, setError] = useState<string>("");
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -45,6 +49,7 @@ function EditProfileModal({
           username: username.trim(),
           bio: bio.trim(),
           isPublic,
+          photoUrl: photoUrl.trim(),
         }),
       });
       if (!response.ok) {
@@ -57,6 +62,7 @@ function EditProfileModal({
         username: string;
         bio: string;
         isPublic: boolean;
+        photoUrl: string;
       };
       onSaved(updated);
     } catch (err) {
@@ -72,7 +78,7 @@ function EditProfileModal({
         <div className="modal-header">
           <h3>Edit profile</h3>
           <button className="modal-close" onClick={onClose} type="button">
-            Ã—
+            ×
           </button>
         </div>
         <div className="modal-body">
@@ -100,7 +106,19 @@ function EditProfileModal({
               id="edit-bio"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
+              maxLength={100}
               rows={3}
+            />
+            <span className="modal-helper">{bio.length}/100</span>
+          </div>
+          <div className="modal-field">
+            <label htmlFor="edit-photo">Photo URL</label>
+            <input
+              id="edit-photo"
+              type="url"
+              value={photoUrl}
+              onChange={(e) => setPhotoUrl(e.target.value)}
+              placeholder="https://example.com/avatar.jpg"
             />
           </div>
           <div className="modal-toggle">

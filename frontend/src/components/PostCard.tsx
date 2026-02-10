@@ -2,10 +2,12 @@ import "../assets/css/PostCard.css";
 import CommentsComponent from "./CommentsComponent.tsx";
 
 type PostCardProps = {
+  postId: string;
   imageUrl: string;
   content: string;
   createdAt: string;
   authorName?: string;
+  authorId?: string;
   likeCount: number;
   isLiked?: boolean;
   onToggleLike?: () => void;
@@ -15,10 +17,12 @@ type PostCardProps = {
 };
 
 function PostCard({
+  postId,
   imageUrl,
   content,
   createdAt,
   authorName,
+  authorId,
   likeCount,
   isLiked = false,
   onToggleLike,
@@ -30,9 +34,37 @@ function PostCard({
     year: "numeric",
   });
 
+  const goToDetailPost = () => {
+    window.history.pushState({}, "", `/detailPost/${postId}`);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
+
+  const goToProfile = () => {
+    if (!authorId) return;
+    window.history.pushState({}, "", `/profil/${authorId}`);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
+
   return (
-    <article className="feed-post-card">
-      <a href="#">
+    <article
+      className="feed-post-card"
+      role="link"
+      tabIndex={0}
+      onClick={goToDetailPost}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          goToDetailPost();
+        }
+      }}
+    >
+      <a
+        href={`/detailPost/${postId}`}
+        onClick={(event) => {
+          event.preventDefault();
+          goToDetailPost();
+        }}
+      >
         <img
           className="feed-post-image"
           src={imageUrl}
@@ -42,7 +74,19 @@ function PostCard({
         />
       </a>
       <div className="feed-post-body">
-        {authorName ? <p className="feed-post-author">{authorName}</p> : null}
+        {authorName ? (
+          <button
+            type="button"
+            className="feed-post-author-btn"
+            onClick={(event) => {
+              event.stopPropagation();
+              goToProfile();
+            }}
+            disabled={!authorId}
+          >
+            {authorName}
+          </button>
+        ) : null}
         <p className="feed-post-description">{content}</p>
         <p className="feed-post-date">{formattedDate}</p>
         <div className="feed-post-footer">
@@ -50,7 +94,10 @@ function PostCard({
           <button
             type="button"
             className={`feed-post-like-btn ${isLiked ? "liked" : ""}`}
-            onClick={onToggleLike}
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggleLike?.();
+            }}
             disabled={likeDisabled || !onToggleLike}
             aria-label="Like post"
           >

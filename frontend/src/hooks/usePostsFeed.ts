@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 export type Post = {
   id: string;
@@ -18,9 +19,10 @@ type UserPreview = {
 
 const POSTS_API_URL = "http://localhost:3001/posts";
 const USERS_API_URL = "http://localhost:3001/users";
-export const CURRENT_USER_ID = "u1";
 
 export function usePostsFeed() {
+  const { user } = useAuth();
+  const currentUserId = user?.id ?? "";
   const [posts, setPosts] = useState<Post[]>([]);
   const [usersById, setUsersById] = useState<Record<string, UserPreview>>({});
   const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(null);
@@ -61,12 +63,16 @@ export function usePostsFeed() {
   }, []);
 
   const toggleLike = async (postId: string) => {
+    if (!currentUserId) {
+      setError("You must be logged in to like posts.");
+      return;
+    }
     if (pendingLikePostId) return;
 
     setPendingLikePostId(postId);
     try {
       const response = await axios.put<Post>(`${POSTS_API_URL}/${postId}/like`, {
-        userId: CURRENT_USER_ID,
+        userId: currentUserId,
       });
 
       setPosts((prevPosts) =>
@@ -90,6 +96,7 @@ export function usePostsFeed() {
   return {
     sortedPosts,
     usersById,
+    currentUserId,
     pendingLikePostId,
     isLoading,
     error,

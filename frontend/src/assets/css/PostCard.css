@@ -27,11 +27,35 @@
   color: #334155;
 }
 
+.feed-post-author-btn {
+  margin: 0 0 8px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 700;
+  color: #334155;
+  text-align: left;
+  cursor: pointer;
+}
+
+.feed-post-author-btn:hover {
+  text-decoration: underline;
+}
+
+.feed-post-author-btn:disabled {
+  cursor: default;
+  text-decoration: none;
+}
+
 .feed-post-description {
   margin: 0 0 6px;
   font-size: 14px;
   color: rgba(15, 23, 42, 0.52);
   line-height: 1.45;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .feed-post-date {
