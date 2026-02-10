@@ -20,3 +20,12 @@ export const createComment = (req: any, res: any) => {
         res.status(400).json({ message: (error as Error).message });
     }
 };
+
+export const deleteComment = (req: any, res: any) => {
+    try {
+        const result = service.deleteComment(req.params.commentId);
+        res.status(201).json(result);
+    } catch (error) {
+        res.status(404).json({ message: (error as Error).message });
+    }
+}
