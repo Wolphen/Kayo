@@ -12,6 +12,32 @@ function App() {
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [passwordStrength, setPasswordStrength] = useState<number>(0);
+
+  const analyzePassword = (value: string) => {
+    const checks = [
+      { ok: value.length >= 8, label: "at least 8 characters" },
+      { ok: /[A-Z]/.test(value), label: "one uppercase letter" },
+      { ok: /[a-z]/.test(value), label: "one lowercase letter" },
+      { ok: /\d/.test(value), label: "one number" },
+      {
+        ok: /[!@#$%^&*()_+}{\":;'?/>.<,]/.test(value),
+        label: "one special character",
+      },
+    ];
+
+    const issues = checks.filter((c) => !c.ok).map((c) => c.label);
+    const passed = checks.length - issues.length;
+    const strength = Math.round((passed / checks.length) * 100);
+
+    return { issues, strength };
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    setPasswordStrength(analyzePassword(newPassword).strength);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,8 +52,10 @@ function App() {
       setError("Email is required.");
       return;
     }
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+
+    const { issues } = analyzePassword(password);
+    if (issues.length > 0) {
+      setError(`Password is missing: ${issues.join(", ")}.`);
       return;
     }
     if (password !== confirmPassword) {
@@ -49,6 +77,7 @@ function App() {
       setUsername("");
       setEmail("");
       setPassword("");
+      setPasswordStrength(0);
       setConfirmPassword("");
       setIsPublic(false);
     } catch (err) {
@@ -112,7 +141,7 @@ function App() {
                 className="block w-full appearance-none rounded-base border-1 border-default-medium bg-transparent px-2.5 pb-2.5 pt-4 text-sm text-heading focus:border-brand focus:outline-none focus:ring-0 peer"
                 placeholder=" "
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 autoComplete="new-password"
                 required
               />
@@ -122,6 +151,17 @@ function App() {
               >
                 Password
               </label>
+            </div>
+            <div className="password-strength">
+              <div className="strength-track">
+                <div
+                  className={`strength-fill strength-${passwordStrength}`}
+                  style={{ width: `${passwordStrength}%` }}
+                />
+              </div>
+              <span className="strength-label">
+                Strength: {passwordStrength}%
+              </span>
             </div>
             <div className="relative">
               <input

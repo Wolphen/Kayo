@@ -33,6 +33,40 @@ body {
   gap: 16px;
 }
 
+.password-strength {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.strength-track {
+  height: 6px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.strength-fill {
+  height: 100%;
+  background: #ef4444;
+  transition: width 200ms ease, background-color 200ms ease;
+}
+
+.strength-40,
+.strength-60 {
+  background: #f59e0b;
+}
+
+.strength-80,
+.strength-100 {
+  background: #22c55e;
+}
+
+.strength-label {
+  font-size: 12px;
+  color: #64748b;
+}
+
 .toggle-row {
   display: flex;
   align-items: center;
