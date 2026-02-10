@@ -3,6 +3,7 @@ import Homepage from "./pages/Homepage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilPage from "./pages/ProfilPage";
+import DetailPostPage from "./pages/DetailPostPage";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
@@ -50,6 +51,12 @@ function App() {
     const parts = pathname.split("/").filter(Boolean);
     const id = parts[1] ?? "";
     return <ProfilPage userId={id} />;
+  }
+
+  if (pathname.startsWith("/detailPost/")) {
+    const parts = pathname.split("/").filter(Boolean);
+    const id = parts[1] ?? "";
+    return <DetailPostPage postId={id} />;
   }
 
   return (

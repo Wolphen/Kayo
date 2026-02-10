@@ -1,0 +1,110 @@
+.detail-post-page {
+  min-height: 100vh;
+  padding: 24px;
+  background: #f8fafc;
+}
+
+.detail-post-shell {
+  max-width: 980px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.detail-post-image {
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  display: block;
+}
+
+.detail-post-body {
+  padding: 24px;
+}
+
+.detail-post-author {
+  margin: 0 0 10px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.detail-post-author-btn {
+  margin: 0 0 10px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+}
+
+.detail-post-author-btn:hover {
+  text-decoration: underline;
+}
+
+.detail-post-content {
+  margin: 0 0 10px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #1e293b;
+  white-space: pre-wrap;
+}
+
+.detail-post-date {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.detail-post-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-post-like-count {
+  font-size: 18px;
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.detail-post-like-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+}
+
+.detail-post-like-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.detail-post-like-icon {
+  width: 28px;
+  height: 28px;
+  fill: transparent;
+  stroke: #ef4444;
+  stroke-width: 1.9;
+}
+
+.detail-post-like-btn.liked .detail-post-like-icon {
+  fill: #ef4444;
+}
+
+.detail-post-state {
+  max-width: 980px;
+  margin: 0 auto 14px;
+  text-align: center;
+  color: #334155;
+}
+
+.detail-post-state-error {
+  color: #dc2626;
+}

@@ -238,7 +238,13 @@ function ProfilPage({ userId }: ProfilPageProps) {
                       </Button>
                     </>
                   ) : (
-                    <Button color="blue">Follow</Button>
+                    <Button
+                      color="blue"
+                      onClick={toggleFollow}
+                      disabled={isFollowSubmitting}
+                    >
+                      {isFollowing ? "Unfollow" : "Follow"}
+                    </Button>
                   )}
                 </div>
               </div>
@@ -272,18 +278,24 @@ function ProfilPage({ userId }: ProfilPageProps) {
             </div>
             {isOwnProfile ? <Button color="light">New post</Button> : null}
           </div>
-          <div className="post-grid">
-            {posts.map((post) => (
-              <PostCard
-                key={post.id}
-                imageUrl={post.imageUrl}
-                content={post.content}
-                createdAt={post.createdAt}
-                authorName={user?.username}
-                likeCount={post.likes}
-              />
-            ))}
-          </div>
+          {canViewPosts ? (
+            <div className="post-grid">
+              {posts.map((post) => (
+                <PostCard
+                  key={post.id}
+                  postId={post.id}
+                  imageUrl={post.imageUrl}
+                  content={post.content}
+                  createdAt={post.createdAt}
+                  authorName={user?.username}
+                  authorId={user?.id}
+                  likeCount={post.likes}
+                />
+              ))}
+            </div>
+          ) : (
+            <p>This profile is private. Follow to see posts.</p>
+          )}
         </section>
       </div>
       {isEditOpen && user ? (
