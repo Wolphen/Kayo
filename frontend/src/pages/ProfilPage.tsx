@@ -3,6 +3,8 @@ import { Badge, Button, Card } from "flowbite-react";
 import "../assets/css/profile.css";
 import EditProfileModal from "../components/EditProfileModal";
 
+import PostCard from "../components/PostCard";
+
 type ProfilPageProps = {
   userId?: string;
 };
@@ -34,6 +36,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
   const [isFollowSubmitting, setIsFollowSubmitting] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
 
+
   const mockPostsByUser: Record<
     string,
     {
@@ -64,7 +67,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
       },
       {
         id: "p21",
-        content: "Testing a softer brand voice for onboarding.",
+        content: "Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.Testing a softer brand voice for onboarding.",
         imageUrl: "https://picsum.photos/seed/p21/900/500",
         createdAt: "2025-10-28T12:05:00.000Z",
         likes: 9,
@@ -198,6 +201,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
     }
   };
 
+
   return (
     <main className="profile-page">
       <div className="profile-shell">
@@ -234,19 +238,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
                       </Button>
                     </>
                   ) : (
-                    <Button
-                      color={isFollowing ? "gray" : "blue"}
-                      onClick={toggleFollow}
-                      disabled={isFollowSubmitting}
-                    >
-                      {isFollowSubmitting
-                        ? isFollowing
-                          ? "Unfollowing..."
-                          : "Following..."
-                        : isFollowing
-                          ? "Following"
-                          : "Follow"}
-                    </Button>
+                    <Button color="blue">Follow</Button>
                   )}
                 </div>
               </div>
@@ -280,43 +272,18 @@ function ProfilPage({ userId }: ProfilPageProps) {
             </div>
             {isOwnProfile ? <Button color="light">New post</Button> : null}
           </div>
-
-          {!canViewPosts ? (
-            <Card className="post-card">
-              <div className="post-body">
-                <p className="post-content">This profile is private.</p>
-                <p className="post-date">
-                  Follow this user to see their posts.
-                </p>
-              </div>
-            </Card>
-          ) : (
-            <div className="post-grid">
-              {posts.map((post) => (
-                <Card key={post.id} className="post-card">
-                  <img
-                    className="post-image"
-                    src={post.imageUrl}
-                    alt="Post illustration"
-                  />
-                  <div className="post-body">
-                    <p className="post-date">
-                      {new Date(post.createdAt).toLocaleDateString("en-US", {
-                        weekday: "short",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </p>
-                    <p className="post-content">{post.content}</p>
-                    <div className="post-footer">
-                      <span>{post.likes} likes</span>
-                      <span>{post.comments} comments</span>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          )}
+          <div className="post-grid">
+            {posts.map((post) => (
+              <PostCard
+                key={post.id}
+                imageUrl={post.imageUrl}
+                content={post.content}
+                createdAt={post.createdAt}
+                authorName={user?.username}
+                likeCount={post.likes}
+              />
+            ))}
+          </div>
         </section>
       </div>
       {isEditOpen && user ? (
