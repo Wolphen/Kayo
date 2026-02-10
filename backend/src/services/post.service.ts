@@ -22,6 +22,7 @@ export class PostService {
             content: data.content.trim(),
             imageUrl: data.imageUrl?.trim() ?? "",
         });
+    }
     getPostById(postId: string | string[]) {
         const post = repo.findById(postId);
 
