@@ -1,7 +1,0 @@
-{
-  "name": "kayo",
-  "private": true,
-  "scripts": {
-    "all": "./run-all.sh"
-  }
-}
