@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import "../assets/css/DetailPostPage.css";
 import { useAuth } from "../context/AuthContext";
+import CommentsComponent from "../components/CommentsComponent.tsx";
 
 type DetailPostPageProps = {
   postId: string;
@@ -121,6 +122,7 @@ function DetailPostPage({ postId }: DetailPostPageProps) {
                 </svg>
               </button>
             </div>
+            <CommentsComponent postId={post.id} details={true} />
           </div>
         </article>
       ) : null}
