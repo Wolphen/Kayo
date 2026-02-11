@@ -126,11 +126,11 @@ function CommentsComponent(props: { postId: string, details?: boolean }) {
   };
 
   if (loading) {
-    return <div className="comments">Chargement des commentaires...</div>;
+    return <div className="comments">Loading comments...</div>;
   }
 
   if (error) {
-    return <div className="comments error">Erreur lors du chargement des commentaires: {error}</div>;
+    return <div className="comments error">Error loading comments: {error}</div>;
   }
 
   return (
@@ -140,7 +140,7 @@ function CommentsComponent(props: { postId: string, details?: boolean }) {
           <textarea
             value={newCommentContent}
             onChange={(e) => setNewCommentContent(e.target.value)}
-            placeholder="Ajouter un commentaire..."
+            placeholder="Add a comment..."
             disabled={isSubmitting}
             className="comment-textarea"
           />
@@ -149,7 +149,7 @@ function CommentsComponent(props: { postId: string, details?: boolean }) {
             disabled={isSubmitting || !newCommentContent.trim()}
             className="comment-submit-btn"
           >
-            {isSubmitting ? "Publication en cours..." : "Publier"}
+            {isSubmitting ? "Posting..." : "Post Comment"}
           </button>
         </form>
       )}
@@ -166,14 +166,15 @@ function CommentsComponent(props: { postId: string, details?: boolean }) {
                 <p className="comment-author">{authorName}</p>
                 <p className="comment-content">{c.content}</p>
                 <p className="comment-date">{new Date(c.createdAt).toLocaleString()}</p>
-                {(isOwnComment && details) && (
+                {isOwnComment && (
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       handleDeleteComment(c.id);
                     }}
                     className="comment-delete-btn"
                   >
-                    supprimer
+                    Delete
                   </button>
                 )}
               </div>

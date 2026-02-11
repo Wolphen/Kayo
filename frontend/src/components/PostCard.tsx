@@ -25,7 +25,7 @@ function PostCard({
   likeCount,
   isLiked = false,
   onToggleLike,
-  likeDisabled = false, detailedComments = false,
+  likeDisabled = false, detailedComments = false
 }: PostCardProps) {
   const formattedDate = new Date(createdAt).toLocaleDateString("fr-FR", {
     day: "2-digit",
