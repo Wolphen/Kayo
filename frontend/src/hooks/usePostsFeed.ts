@@ -100,6 +100,20 @@ export function usePostsFeed() {
     }
   };
 
+  const deletePost = async (postId: string) => {
+    if (!currentUserId) {
+      setError("You must be logged in to delete posts.");
+      return;
+    }
+
+    try {
+      await axios.delete(`${POSTS_API_URL}/${postId}`);
+      setPosts((prev) => prev.filter((p) => p.id !== postId));
+    } catch (err) {
+      setError("Impossible de supprimer le post.");
+    }
+  };
+
   const sortedPosts = useMemo(
     () =>
       [...posts].sort(
@@ -117,5 +131,6 @@ export function usePostsFeed() {
     isLoading,
     error,
     toggleLike,
+    deletePost,
   };
 }
