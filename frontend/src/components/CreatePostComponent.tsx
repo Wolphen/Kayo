@@ -37,6 +37,11 @@ function CreatePostComponent({ onClose, onSaved }: CreatePostModalProps) {
       return;
     }
 
+    if (!imageUrl.trim()) {
+      setError("Image URL is required.");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const response = await axios.post(
@@ -88,7 +93,7 @@ function CreatePostComponent({ onClose, onSaved }: CreatePostModalProps) {
             />
           </div>
           <div className="modal-field">
-            <label htmlFor="postImage">Image (url optionnelle)</label>
+            <label htmlFor="postImage">Image</label>
             <input
               id="postImage"
               type="url"

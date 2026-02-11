@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Spinner } from "flowbite-react";
+import { useMemo, useState } from "react";
 import "../assets/css/Homepage.css";
 import PostCard from "../components/PostCard";
 import { usePostsFeed } from "../hooks/usePostsFeed";
@@ -11,9 +12,11 @@ const LOAD_DELAY_MS = 2000;
 
 function Homepage() {
   const { logout } = useAuth();
+  const [showFollowingOnly, setShowFollowingOnly] = useState(false);
   const {
     sortedPosts,
     usersById,
+    followingIds,
     currentUserId,
     pendingLikePostId,
     isLoading,
@@ -44,6 +47,15 @@ function Homepage() {
   );
   const hasMorePosts = sortedPosts.length > visiblePostsCount;
   const isEmpty = !isLoading && !error && sortedPosts.length === 0;
+
+  const displayedPosts = useMemo(() => {
+    if (!showFollowingOnly) {
+      return sortedPosts;
+    }
+    return sortedPosts.filter((post) => followingIds.includes(post.authorId));
+  }, [showFollowingOnly, sortedPosts, followingIds]);
+
+  const isEmpty = !isLoading && !error && displayedPosts.length === 0;
 
   const handleLoadMore = useCallback(() => {
     if (isLoadingMore || !hasMorePosts) return;
@@ -102,6 +114,15 @@ function Homepage() {
           Profil
         </a>
       </header>
+      <div className="home-filter-row">
+        <button
+          type="button"
+          className={`home-filter-btn ${showFollowingOnly ? "active" : ""}`}
+          onClick={() => setShowFollowingOnly((prev) => !prev)}
+        >
+          {showFollowingOnly ? "Posts suivis" : "Tous les posts"}
+        </button>
+      </div>
       {isLoading ? <p className="home-state">Chargement des posts...</p> : null}
       {error ? <p className="home-state home-state-error">{error}</p> : null}
       {isEmpty ? (

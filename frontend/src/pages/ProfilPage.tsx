@@ -37,9 +37,8 @@ function ProfilPage({ userId }: ProfilPageProps) {
   const [isFollowSubmitting, setIsFollowSubmitting] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCreatePosts, setIsCreatePosts] = useState<boolean>(false);
-  const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(
-    null,
-  );
+  const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(null);
+
 
   const [posts, setPosts] = useState<
     {
@@ -330,9 +329,9 @@ function ProfilPage({ userId }: ProfilPageProps) {
         />
       ) : null}
       {isCreatePosts && user ? (
-        <CreatePostModal
-          onClose={() => setIsCreatePosts(false)}
-          onSaved={() => {}}
+        <CreatePostModal 
+          onClose={() => setIsCreatePosts(false)} 
+          onSaved={(newPost) => setPosts((prev) => [newPost, ...prev])}
         />
       ) : null}
     </main>

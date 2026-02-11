@@ -108,3 +108,23 @@
 .detail-post-state-error {
   color: #dc2626;
 }
+
+.detail-post-delete-btn {
+  padding: 8px 12px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.detail-post-delete-btn:hover {
+  background: #dc2626;
+}
+
+.detail-post-delete-btn:active {
+  background: #b91c1c;
+}
