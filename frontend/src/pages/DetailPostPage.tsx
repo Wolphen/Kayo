@@ -1,5 +1,4 @@
 import "../assets/css/DetailPostPage.css";
-import { useAuth } from "../context/AuthContext";
 import CommentsComponent from "../components/CommentsComponent.tsx";
 import { usePostDetail } from "../hooks/usePostDetail";
 

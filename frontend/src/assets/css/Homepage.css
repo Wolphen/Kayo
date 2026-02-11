@@ -80,6 +80,33 @@
   gap: 20px;
 }
 
+.home-filter-row {
+  max-width: 900px;
+  margin: 0 auto 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.home-filter-btn {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.home-filter-btn:hover {
+  background: #f1f5f9;
+}
+
+.home-filter-btn.active {
+  background: #1e293b;
+  border-color: #1e293b;
+  color: #ffffff;
+}
+
 .home-state {
   max-width: 900px;
   margin: 0 auto 14px;
