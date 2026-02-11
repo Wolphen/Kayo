@@ -12,7 +12,7 @@ type PostCardProps = {
   isLiked?: boolean;
   onToggleLike?: () => void;
   likeDisabled?: boolean;
-    detailedComments?: boolean;
+  detailedComments?: boolean;
 };
 
 function PostCard({
