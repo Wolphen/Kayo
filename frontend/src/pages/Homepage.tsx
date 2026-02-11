@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import "../assets/css/Homepage.css";
 import PostCard from "../components/PostCard";
 import { usePostsFeed } from "../hooks/usePostsFeed";
@@ -5,9 +6,26 @@ import { useAuth } from "../context/AuthContext";
 
 function Homepage() {
   const { logout } = useAuth();
-  const { sortedPosts, usersById, currentUserId, pendingLikePostId, isLoading, error, toggleLike } =
-    usePostsFeed();
-  const isEmpty = !isLoading && !error && sortedPosts.length === 0;
+  const [showFollowingOnly, setShowFollowingOnly] = useState(false);
+  const {
+    sortedPosts,
+    usersById,
+    followingIds,
+    currentUserId,
+    pendingLikePostId,
+    isLoading,
+    error,
+    toggleLike,
+  } = usePostsFeed();
+
+  const displayedPosts = useMemo(() => {
+    if (!showFollowingOnly) {
+      return sortedPosts;
+    }
+    return sortedPosts.filter((post) => followingIds.includes(post.authorId));
+  }, [showFollowingOnly, sortedPosts, followingIds]);
+
+  const isEmpty = !isLoading && !error && displayedPosts.length === 0;
 
   return (
     <main className="homepage">
@@ -38,11 +56,26 @@ function Homepage() {
           Profil
         </a>
       </header>
+      <div className="home-filter-row">
+        <button
+          type="button"
+          className={`home-filter-btn ${showFollowingOnly ? "active" : ""}`}
+          onClick={() => setShowFollowingOnly((prev) => !prev)}
+        >
+          {showFollowingOnly ? "Posts suivis" : "Tous les posts"}
+        </button>
+      </div>
       {isLoading ? <p className="home-state">Chargement des posts...</p> : null}
       {error ? <p className="home-state home-state-error">{error}</p> : null}
-      {isEmpty ? <p className="home-state">Aucun post pour le moment.</p> : null}
+      {isEmpty ? (
+        <p className="home-state">
+          {showFollowingOnly
+            ? "Aucun post des personnes que tu suis."
+            : "Aucun post pour le moment."}
+        </p>
+      ) : null}
       <section className="home-grid">
-        {sortedPosts.map((post) => (
+        {displayedPosts.map((post) => (
           <PostCard
             key={post.id}
             postId={post.id}

@@ -17,6 +17,11 @@ type UserPreview = {
   username: string;
 };
 
+type CurrentUserDetails = { 
+  id: string;
+  following: string[];
+};
+
 const POSTS_API_URL = "http://localhost:3001/posts";
 const USERS_API_URL = "http://localhost:3001/users";
 
@@ -25,6 +30,7 @@ export function usePostsFeed() {
   const currentUserId = user?.id ?? "";
   const [posts, setPosts] = useState<Post[]>([]);
   const [usersById, setUsersById] = useState<Record<string, UserPreview>>({});
+  const [followingIds, setFollowingIds] = useState<string[]>([]); // IDs des utilisateurs que le currentUser suit
   const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,6 +56,15 @@ export function usePostsFeed() {
           userMap[user.id] = user;
         });
 
+        if (currentUserId) { // Si l'utilisateur est connecté, récupérer ses détails pour obtenir la liste des utilisateurs qu'il suit
+          const currentUserResponse = await axios.get<CurrentUserDetails>(
+            `${USERS_API_URL}/${currentUserId}`,
+          );
+          setFollowingIds(currentUserResponse.data.following ?? []);
+        } else {
+          setFollowingIds([]);
+        }
+
         setPosts(nextPosts);
         setUsersById(userMap);
       } catch {
@@ -60,7 +75,7 @@ export function usePostsFeed() {
     };
 
     void fetchPostsAndUsers();
-  }, []);
+  }, [currentUserId]);
 
   const toggleLike = async (postId: string) => {
     if (!currentUserId) {
@@ -96,6 +111,7 @@ export function usePostsFeed() {
   return {
     sortedPosts,
     usersById,
+    followingIds,
     currentUserId,
     pendingLikePostId,
     isLoading,
