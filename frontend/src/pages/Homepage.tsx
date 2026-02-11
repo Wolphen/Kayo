@@ -1,17 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Spinner } from "flowbite-react";
-import { useMemo, useState } from "react";
 import "../assets/css/Homepage.css";
 import PostCard from "../components/PostCard";
 import { usePostsFeed } from "../hooks/usePostsFeed";
-import { useAuth } from "../context/AuthContext";
 
 const INITIAL_POSTS_COUNT = 3;
 const LOAD_MORE_COUNT = 3;
 const LOAD_DELAY_MS = 2000;
 
 function Homepage() {
-  const { logout } = useAuth();
   const [showFollowingOnly, setShowFollowingOnly] = useState(false);
   const {
     sortedPosts,
@@ -31,7 +28,7 @@ function Homepage() {
 
   useEffect(() => {
     setVisiblePostsCount(INITIAL_POSTS_COUNT);
-  }, [sortedPosts]);
+  }, [sortedPosts, showFollowingOnly]);
 
   useEffect(() => {
     return () => {
@@ -41,13 +38,6 @@ function Homepage() {
     };
   }, []);
 
-  const visiblePosts = sortedPosts.slice(
-    0,
-    Math.min(visiblePostsCount, sortedPosts.length),
-  );
-  const hasMorePosts = sortedPosts.length > visiblePostsCount;
-  const isEmpty = !isLoading && !error && sortedPosts.length === 0;
-
   const displayedPosts = useMemo(() => {
     if (!showFollowingOnly) {
       return sortedPosts;
@@ -55,6 +45,11 @@ function Homepage() {
     return sortedPosts.filter((post) => followingIds.includes(post.authorId));
   }, [showFollowingOnly, sortedPosts, followingIds]);
 
+  const visiblePosts = displayedPosts.slice(
+    0,
+    Math.min(visiblePostsCount, displayedPosts.length),
+  );
+  const hasMorePosts = displayedPosts.length > visiblePostsCount;
   const isEmpty = !isLoading && !error && displayedPosts.length === 0;
 
   const handleLoadMore = useCallback(() => {
@@ -87,33 +82,6 @@ function Homepage() {
 
   return (
     <main className="homepage">
-      <header className="home-header">
-        <div className="home-brand">
-          <div className="home-logo">K</div>
-          <div>
-            <h1>Kayo</h1>
-            <button className="home-logout" onClick={logout} type="button">
-              Déconnexion
-            </button>
-          </div>
-        </div>
-        <a className="home-profile" href="/profil" aria-label="Profil">
-          <svg
-            className="home-profile-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M20 21a8 8 0 0 0-16 0" />
-            <circle cx="12" cy="7" r="4" />
-          </svg>
-          Profil
-        </a>
-      </header>
       <div className="home-filter-row">
         <button
           type="button"
@@ -125,9 +93,7 @@ function Homepage() {
       </div>
       {isLoading ? <p className="home-state">Chargement des posts...</p> : null}
       {error ? <p className="home-state home-state-error">{error}</p> : null}
-      {isEmpty ? (
-        <p className="home-state">Aucun post pour le moment.</p>
-      ) : null}
+      {isEmpty ? <p className="home-state">Aucun post pour le moment.</p> : null}
       <section className="home-grid">
         {visiblePosts.map((post) => (
           <PostCard
@@ -146,7 +112,7 @@ function Homepage() {
           />
         ))}
       </section>
-      {!isLoading && sortedPosts.length > INITIAL_POSTS_COUNT ? (
+      {!isLoading && displayedPosts.length > INITIAL_POSTS_COUNT ? (
         <div className="home-load-more">
           {hasMorePosts ? (
             <div ref={loadMoreTriggerRef} className="home-load-more-trigger" />
@@ -157,7 +123,9 @@ function Homepage() {
               Chargement...
             </p>
           ) : null}
-          <p className="home-load-more-meta"></p>
+          <p className="home-load-more-meta">
+            {visiblePosts.length} / {displayedPosts.length} posts affiches
+          </p>
         </div>
       ) : null}
     </main>
