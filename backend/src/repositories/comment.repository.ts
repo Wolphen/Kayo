@@ -5,8 +5,14 @@ import {randomUUID} from "node:crypto";
 
 export class CommentRepository{
 
-    findByPostId(postId: string | string[]): Comment | undefined{
-        return comments.find((comment) => comment.postId === postId);
+    findByPostId(postId: string): Comment[] {
+        return comments.filter((comment) => comment.postId === postId);
+    }
+
+    findLastByPostId(postId: string): Comment{
+        const matches = comments.filter((c) => c.postId === postId);
+        matches.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+        return matches[0];
     }
 
     create(data: CreateCommentDto): Comment | undefined{

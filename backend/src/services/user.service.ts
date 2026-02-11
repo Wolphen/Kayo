@@ -20,8 +20,9 @@ export class UserService {
   }
 
   getUserById(id: string | string[]) {
+    console.log("Fetching user with id:", id);
     const user = repo.findById(id);
-
+    console.log(user);
     if (!user) {
       throw new Error("User not found");
     }

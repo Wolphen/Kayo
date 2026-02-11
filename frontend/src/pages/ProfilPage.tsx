@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Badge, Button, Card } from "flowbite-react";
 import "../assets/css/profile.css";
 import EditProfileModal from "../components/EditProfileModal";
+import CreatePostModal from "../components/CreatePostComponent";
 import { useAuth } from "../context/AuthContext";
 import avatarPlaceholder from "../assets/avatar-placeholder.svg";
 
@@ -35,6 +36,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
   const [error, setError] = useState<string>("");
   const [isFollowSubmitting, setIsFollowSubmitting] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [isCreatePosts, setIsCreatePosts] = useState<boolean>(false);
   const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(
     null,
   );
@@ -270,7 +272,11 @@ function ProfilPage({ userId }: ProfilPageProps) {
                   : "Latest activity from this profile."}
               </p>
             </div>
-            {isOwnProfile ? <Button color="light">New post</Button> : null}
+            {isOwnProfile ? (
+              <Button color="light" onClick={() => setIsCreatePosts(true)}>
+                New post
+              </Button>
+            ) : null}
           </div>
           {!canViewPosts ? (
             <Card className="post-card">
@@ -321,6 +327,12 @@ function ProfilPage({ userId }: ProfilPageProps) {
             setUser((prev) => (prev ? { ...prev, ...updated } : prev));
             setIsEditOpen(false);
           }}
+        />
+      ) : null}
+      {isCreatePosts && user ? (
+        <CreatePostModal
+          onClose={() => setIsCreatePosts(false)}
+          onSaved={() => {}}
         />
       ) : null}
     </main>
