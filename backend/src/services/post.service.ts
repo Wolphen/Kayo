@@ -40,4 +40,18 @@ export class PostService {
 
         return repo.toggleLike(postId, userId);
     }
+
+    deletePost(postId: string | string[], requesterId: string) {
+        const targetId = Array.isArray(postId) ? postId[0] : postId;
+        const post = repo.findById(targetId);
+        if (!post) {
+            throw new Error("Post not found");
+        }
+
+        if (post.authorId !== requesterId) {
+            throw new Error("Not authorized to delete this post");
+        }
+
+        return repo.deleteById(targetId);
+    }
 }

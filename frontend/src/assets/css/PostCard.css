@@ -110,3 +110,23 @@
 .feed-post-like-btn.liked .feed-post-like-icon {
   fill: #ef4444;
 }
+
+.feed-post-delete-btn {
+  padding: 6px 10px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.feed-post-delete-btn:hover {
+  background: #dc2626;
+}
+
+.feed-post-delete-btn:active {
+  background: #b91c1c;
+}

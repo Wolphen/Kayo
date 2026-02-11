@@ -126,11 +126,11 @@ function CommentsComponent(props: { postId: string, details?: boolean }) {
   };
 
   if (loading) {
-    return <div className="comments">Loading comments...</div>;
+    return <div className="comments">Chargement des commentaires...</div>;
   }
 
   if (error) {
-    return <div className="comments error">Error loading comments: {error}</div>;
+    return <div className="comments error">Erreur lors du chargement des commentaires: {error}</div>;
   }
 
   return (
@@ -140,7 +140,7 @@ function CommentsComponent(props: { postId: string, details?: boolean }) {
           <textarea
             value={newCommentContent}
             onChange={(e) => setNewCommentContent(e.target.value)}
-            placeholder="Add a comment..."
+            placeholder="Ajouter un commentaire..."
             disabled={isSubmitting}
             className="comment-textarea"
           />
@@ -149,7 +149,7 @@ function CommentsComponent(props: { postId: string, details?: boolean }) {
             disabled={isSubmitting || !newCommentContent.trim()}
             className="comment-submit-btn"
           >
-            {isSubmitting ? "Posting..." : "Post Comment"}
+            {isSubmitting ? "Publication en cours..." : "Publier"}
           </button>
         </form>
       )}
@@ -166,15 +166,14 @@ function CommentsComponent(props: { postId: string, details?: boolean }) {
                 <p className="comment-author">{authorName}</p>
                 <p className="comment-content">{c.content}</p>
                 <p className="comment-date">{new Date(c.createdAt).toLocaleString()}</p>
-                {isOwnComment && (
+                {(isOwnComment && details) && (
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
+                    onClick={() => {
                       handleDeleteComment(c.id);
                     }}
                     className="comment-delete-btn"
                   >
-                    Delete
+                    supprimer
                   </button>
                 )}
               </div>
