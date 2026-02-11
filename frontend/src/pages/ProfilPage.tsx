@@ -323,9 +323,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
       {isCreatePosts && user ? (
         <CreatePostModal 
           onClose={() => setIsCreatePosts(false)} 
-          onSaved={() => {
-
-          }}
+          onSaved={(newPost) => setPosts((prev) => [newPost, ...prev])}
         />
       ) : null}
     </main>
