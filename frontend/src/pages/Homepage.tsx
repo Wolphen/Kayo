@@ -30,7 +30,7 @@ function Homepage() {
 
   useEffect(() => {
     setVisiblePostsCount(INITIAL_POSTS_COUNT);
-  }, [sortedPosts, showFollowingOnly]);
+  }, [showFollowingOnly]);
 
   useEffect(() => {
     return () => {
