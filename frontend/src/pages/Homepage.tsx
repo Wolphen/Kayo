@@ -15,10 +15,12 @@ function Homepage() {
     usersById,
     followingIds,
     currentUserId,
+    currentUserIsAdmin,
     pendingLikePostId,
     isLoading,
     error,
     toggleLike,
+    deletePost,
   } = usePostsFeed();
   const [visiblePostsCount, setVisiblePostsCount] =
     useState<number>(INITIAL_POSTS_COUNT);
@@ -108,6 +110,8 @@ function Homepage() {
             isLiked={post.likes.includes(currentUserId)}
             onToggleLike={() => void toggleLike(post.id)}
             likeDisabled={pendingLikePostId === post.id}
+            canDelete={Boolean(currentUserId) && (currentUserId === post.authorId || currentUserIsAdmin)}
+            onDelete={() => void deletePost(post.id)}
             detailedComments={false}
           />
         ))}

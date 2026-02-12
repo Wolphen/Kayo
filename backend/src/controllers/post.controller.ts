@@ -42,7 +42,8 @@ export const togglePostLike = (req: Request, res: Response) => {
 export const deletePost = (req: AuthRequest, res: Response) => {
     try {
         const requesterId = req.user?.sub ?? "";
-        const deleted = service.deletePost(req.params.id, requesterId);
+        const requesterIsAdmin = Boolean(req.user?.isAdmin);
+        const deleted = service.deletePost(req.params.id, requesterId, requesterIsAdmin);
         res.status(200).json(deleted);
     } catch (error) {
         const message = (error as Error).message;
@@ -50,3 +51,4 @@ export const deletePost = (req: AuthRequest, res: Response) => {
         res.status(status).json({ message });
     }
 };
+
