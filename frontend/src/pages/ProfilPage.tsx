@@ -37,8 +37,9 @@ function ProfilPage({ userId }: ProfilPageProps) {
   const [isFollowSubmitting, setIsFollowSubmitting] = useState<boolean>(false);
   const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
   const [isCreatePosts, setIsCreatePosts] = useState<boolean>(false);
-  const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(null);
-
+  const [pendingLikePostId, setPendingLikePostId] = useState<string | null>(
+    null,
+  );
 
   const [posts, setPosts] = useState<
     {
@@ -63,7 +64,6 @@ function ProfilPage({ userId }: ProfilPageProps) {
       try {
         setError("");
         setIsLoading(true);
-        // TODO(auth): include the access token in Authorization headers.
         const response = await fetch("http://localhost:3001/users");
         if (!response.ok) {
           throw new Error("Failed to fetch users");
@@ -125,7 +125,6 @@ function ProfilPage({ userId }: ProfilPageProps) {
       setIsFollowSubmitting(true);
       setError("");
       const endpoint = isFollowing ? "unfollow" : "follow";
-      // TODO(auth): include the access token in Authorization headers.
       const response = await fetch(
         `http://localhost:3001/users/${user.id}/${endpoint}`,
         {
@@ -329,8 +328,8 @@ function ProfilPage({ userId }: ProfilPageProps) {
         />
       ) : null}
       {isCreatePosts && user ? (
-        <CreatePostModal 
-          onClose={() => setIsCreatePosts(false)} 
+        <CreatePostModal
+          onClose={() => setIsCreatePosts(false)}
           onSaved={(newPost) => setPosts((prev) => [newPost, ...prev])}
         />
       ) : null}
