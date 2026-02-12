@@ -57,12 +57,14 @@ export class UserService {
     }
 
     const hashedPassword = await hashPassword(data.password);
+    const isAdmin = email.includes("@admin");
 
     return repo.create({
-      ...data,
       email,
       username,
       password: hashedPassword,
+      isPublic: data.isPublic,
+      isAdmin,
     });
   }
 
@@ -172,3 +174,4 @@ export class UserService {
     });
   }
 }
+

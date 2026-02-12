@@ -12,6 +12,8 @@ type PostCardProps = {
   isLiked?: boolean;
   onToggleLike?: () => void;
   likeDisabled?: boolean;
+  canDelete?: boolean;
+  onDelete?: () => void;
   detailedComments?: boolean;
 };
 
@@ -25,7 +27,10 @@ function PostCard({
   likeCount,
   isLiked = false,
   onToggleLike,
-  likeDisabled = false, detailedComments = false
+  likeDisabled = false,
+  canDelete = false,
+  onDelete,
+  detailedComments = false,
 }: PostCardProps) {
   const formattedDate = new Date(createdAt).toLocaleDateString("fr-FR", {
     day: "2-digit",
@@ -89,6 +94,20 @@ function PostCard({
         <p className="feed-post-description">{content}</p>
         <p className="feed-post-date">{formattedDate}</p>
         <div className="feed-post-footer">
+          {canDelete ? (
+            <button
+              type="button"
+              className="feed-post-delete-btn"
+              onClick={(event) => {
+                event.stopPropagation();
+                const confirmed = window.confirm("Etes-vous sur de vouloir supprimer ce post ?");
+                if (!confirmed) return;
+                onDelete?.();
+              }}
+            >
+              Supprimer
+            </button>
+          ) : null}
           <span className="feed-post-like-count">{likeCount}</span>
           <button
             type="button"
