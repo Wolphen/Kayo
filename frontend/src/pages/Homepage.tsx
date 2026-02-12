@@ -54,6 +54,7 @@ function Homepage() {
   const hasMorePosts = displayedPosts.length > visiblePostsCount;
   const isEmpty = !isLoading && !error && displayedPosts.length === 0;
 
+  // fonction pour charger plus de posts pour le lazy loading
   const handleLoadMore = useCallback(() => {
     if (isLoadingMore || !hasMorePosts) return;
     setIsLoadingMore(true);
@@ -64,6 +65,7 @@ function Homepage() {
     }, LOAD_DELAY_MS);
   }, [hasMorePosts, isLoadingMore]);
 
+  // détection du scroll vers le bas du dernier post pour charger plus de posts pour le lazy loading
   useEffect(() => {
     const node = loadMoreTriggerRef.current;
     if (!node || isLoading || !hasMorePosts) return;
@@ -95,7 +97,9 @@ function Homepage() {
       </div>
       {isLoading ? <p className="home-state">Chargement des posts...</p> : null}
       {error ? <p className="home-state home-state-error">{error}</p> : null}
-      {isEmpty ? <p className="home-state">Aucun post pour le moment.</p> : null}
+      {isEmpty ? (
+        <p className="home-state">Aucun post pour le moment.</p>
+      ) : null}
       <section className="home-grid">
         {visiblePosts.map((post) => (
           <PostCard
@@ -110,7 +114,10 @@ function Homepage() {
             isLiked={post.likes.includes(currentUserId)}
             onToggleLike={() => void toggleLike(post.id)}
             likeDisabled={pendingLikePostId === post.id}
-            canDelete={Boolean(currentUserId) && (currentUserId === post.authorId || currentUserIsAdmin)}
+            canDelete={
+              Boolean(currentUserId) &&
+              (currentUserId === post.authorId || currentUserIsAdmin)
+            }
             onDelete={() => void deletePost(post.id)}
             detailedComments={false}
           />
