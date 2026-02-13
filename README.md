@@ -52,3 +52,11 @@ Application web permettant aux utilisateurs de s’inscrire, se connecter et int
 ```bash
 git clone https://github.com/Wolphen/Kayo.git
 cd frontend
+npm install
+npm run dev
+
+// Autre terminal 
+cd backend
+npm install
+npm run dev
+

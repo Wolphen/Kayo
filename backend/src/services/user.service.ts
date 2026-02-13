@@ -56,13 +56,17 @@ export class UserService {
       throw new Error("Username already used");
     }
 
+    // pour les test de l'admin j'ai fait en sorte que les email contenant "@admin" soient des admin,
+    // à ne pas faire en production évidement
     const hashedPassword = await hashPassword(data.password);
+    const isAdmin = email.includes("@admin");
 
     return repo.create({
-      ...data,
       email,
       username,
       password: hashedPassword,
+      isPublic: data.isPublic,
+      isAdmin,
     });
   }
 

@@ -1,6 +1,7 @@
-﻿export type CreateUserDto = {
+export type CreateUserDto = {
     email: string;
     username: string;
     password: string;
     isPublic?: boolean;
+    isAdmin?: boolean;
 };

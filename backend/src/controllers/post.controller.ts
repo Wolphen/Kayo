@@ -40,3 +40,17 @@ export const togglePostLike = (req: Request, res: Response) => {
         res.status(status).json({ message });
     }
 };
+
+export const deletePost = (req: AuthRequest, res: Response) => {
+    try {
+        const requesterId = req.user?.sub ?? "";
+        const requesterIsAdmin = Boolean(req.user?.isAdmin);
+        const deleted = service.deletePost(req.params.id, requesterId, requesterIsAdmin);
+        res.status(200).json(deleted);
+    } catch (error) {
+        const message = (error as Error).message;
+        const status = message === "Post not found" ? 404 : message === "Not authorized to delete this post" ? 403 : 400;
+        res.status(status).json({ message });
+    }
+};
+

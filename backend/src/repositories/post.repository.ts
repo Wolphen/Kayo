@@ -44,4 +44,11 @@ export class PostRepository {
         }
         return post;
     }
+
+    deleteById(id: string | string[]): Post | undefined {
+        const targetId = Array.isArray(id) ? id[0] : id;
+        const index = posts.findIndex((p) => p.id === targetId);
+        if (index === -1) return undefined;
+        return posts.splice(index, 1)[0];
+    }
 }

@@ -1,4 +1,4 @@
-﻿import { users } from "../data/users.mock";
+import { users } from "../data/users.mock";
 import { User } from "../data/type";
 import { CreateUserDto } from "../dtos/user/create-user.dto";
 import { randomUUID } from "node:crypto";
@@ -25,8 +25,8 @@ export class UserRepository {
             id: randomUUID(),
             email: data.email,
             username: data.username,
-            password: data.password, // hash later
-            isAdmin: false,
+            password: data.password,
+            isAdmin: data.isAdmin ?? false,
             photoUrl: "",
             bio: "",
             followers: [],
