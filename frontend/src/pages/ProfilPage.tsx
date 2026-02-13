@@ -272,6 +272,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
             </div>
             {isOwnProfile ? (
               <Button color="light" onClick={() => setIsCreatePosts(true)}>
+                {/* Ouvre la modale de création de post */}
                 New post
               </Button>
             ) : null}

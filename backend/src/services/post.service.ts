@@ -17,6 +17,7 @@ export class PostService {
             throw new Error("Content is required");
         }
 
+        // Création du post avec les données rentrées par l'utilisateur
         return repo.create({
             authorId,
             content: data.content.trim(),
