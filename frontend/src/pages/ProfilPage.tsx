@@ -271,6 +271,7 @@ function ProfilPage({ userId }: ProfilPageProps) {
             </div>
             {isOwnProfile ? (
               <Button color="light" onClick={() => setIsCreatePosts(true)}>
+                {/* Ouvre la modale de création de post */}
                 New post
               </Button>
             ) : null}
@@ -322,10 +323,10 @@ function ProfilPage({ userId }: ProfilPageProps) {
       ) : null}
       {isCreatePosts && user ? (
         <CreatePostModal 
+          // Ferme la modale de création
           onClose={() => setIsCreatePosts(false)} 
-          onSaved={() => {
-
-          }}
+          // Ajoute le nouveau post en premier de la liste et l'affiche en premier
+          onSaved={(newPost) => setPosts((prev) => [newPost, ...prev])}
         />
       ) : null}
     </main>

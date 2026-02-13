@@ -12,6 +12,7 @@ export class PostRepository {
     }
 
     create(data: { authorId: string; content: string; imageUrl?: string }): Post {
+        // Créer un objet Post 
         const newPost: Post = {
             id: randomUUID(),
             authorId: data.authorId,
@@ -22,6 +23,7 @@ export class PostRepository {
             likes: [],
         };
 
+        // Ajoute le post en début du mock de posts
         posts.unshift(newPost);
         return newPost;
     }

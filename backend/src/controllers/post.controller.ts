@@ -10,8 +10,10 @@ export const getPosts = (req: Request, res: Response) => {
 
 export const createPost = (req: AuthRequest, res: Response) => {
     try {
+        // Récupère l'utilisateur connecté via son token traité dans la middleware
         const authorId = req.user?.sub ?? "";
         const post = service.createPost(authorId, req.body);
+        // Renvoi la réponse du post au front
         res.status(201).json(post);
     } catch (error) {
         res.status(400).json({ message: (error as Error).message });

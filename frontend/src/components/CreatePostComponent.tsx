@@ -17,13 +17,20 @@ type CreatePostModalProps = {
 };
 
 function CreatePostComponent({ onClose, onSaved }: CreatePostModalProps) {
+
   const { token } = useAuth();
+
   const [content, setContent] = useState("");
+
   const [imageUrl, setImageUrl] = useState("");
+
   const [error, setError] = useState("");
+ 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+
+    // Empêche le chargement de la page à la soumission
     event.preventDefault();
     setError("");
 
